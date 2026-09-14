@@ -1,0 +1,587 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Apple MacBook Neo (2026) — Competitive Analysis</title>
+<script src="https://resource.bantouyan.com/js/tailwind@3.4.16.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="shared.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter','Helvetica Neue',Arial,sans-serif;background:#f0f4f8;color:#1e293b}
+section[id]{scroll-margin-top:60px}
+.hero{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 50%,#3d3d3d 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.05) 0%,transparent 70%)}
+.stat-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:20px 24px}
+.section-header{position:relative;padding-left:16px}
+.section-header::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:4px;background:#1a1a1a;border-radius:2px}
+.card{background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04)}
+.card-hover{transition:transform 0.2s,box-shadow 0.2s}
+.card-hover:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,0.12)}
+.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.data-table thead{background:#1a1a1a}
+.data-table thead th{padding:12px 16px;text-align:left;color:#fff;font-weight:600;font-size:12.5px;letter-spacing:0.3px}
+.data-table thead th.our-col{background:#333}
+.data-table tbody tr{border-bottom:1px solid #e8f0f8;transition:background 0.15s}
+.data-table tbody tr:hover{background:#f5f5f5}
+.data-table tbody tr:nth-child(even){background:#f9f9f9}
+.data-table tbody td{padding:11px 16px;vertical-align:middle;line-height:1.5}
+.data-table tbody td.row-label{font-weight:700;color:#1a1a1a;background:#f5f5f5!important;width:14%;white-space:nowrap}
+.data-table tbody td.our-col{background:#f9f9f9;font-weight:600}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.3px}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-yellow{background:#fef9c3;color:#854d0e}
+.badge-dark{background:#1a1a1a;color:#fff}
+.badge-navy{background:#1b3a6b;color:#fff}
+.badge-blue{background:#dbeafe;color:#1d4ed8}
+.score-bar-bg{background:#e2e8f0;border-radius:99px;height:8px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#1a1a1a,#6b7280);transition:width 1s ease}
+.pro-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f0f4f8}
+.pro-item:last-child{border-bottom:none}
+.pro-dot-pos{width:22px;height:22px;border-radius:50%;background:#dcfce7;color:#166534;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px}
+.pro-dot-neg{width:22px;height:22px;border-radius:50%;background:#fee2e2;color:#991b1b;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px}
+.verdict-rec{background:#f0fdf4;border-left:4px solid #22c55e;border-radius:0 10px 10px 0}
+.verdict-cau{background:#fff7ed;border-left:4px solid #f97316;border-radius:0 10px 10px 0}
+.gallery-main{border-radius:16px;overflow:hidden;background:#f5f5f5;border:1px solid #e5e7eb}
+.gallery-main img{width:100%;height:280px;object-fit:contain;padding:16px}
+.gallery-thumbs{display:flex;gap:10px;margin-top:12px}
+.gallery-thumb{flex:1;border-radius:10px;overflow:hidden;border:2px solid #e5e7eb;cursor:pointer;transition:border-color 0.2s;background:#f5f5f5}
+.gallery-thumb:hover,.gallery-thumb.active{border-color:#1a1a1a}
+.gallery-thumb img{width:100%;height:72px;object-fit:contain;padding:8px}
+.table-wrap{overflow-x:auto;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.tl-dot{width:40px;height:40px;border-radius:50%;background:#1a1a1a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;z-index:1;box-shadow:0 0 0 4px rgba(0,0,0,0.1);position:absolute;left:-48px}
+a{text-decoration:none}
+</style>
+</head>
+<body>
+<div id="navContainer"></div>
+
+<!-- HERO -->
+<section class="hero py-16 px-6">
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="mb-5">
+      <span style="display:inline-flex;align-items:center;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#d1d5db;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;">Entry-Level &nbsp;·&nbsp; Apple &nbsp;·&nbsp; March 2026</span>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#9ca3af;letter-spacing:1px;margin-bottom:8px;">APPLE</div>
+        <h1 class="text-4xl lg:text-5xl font-bold text-white leading-tight mb-4">
+          MacBook Neo
+          <span class="block text-gray-400 text-3xl font-light mt-1">Competitive Analysis Report</span>
+        </h1>
+        <p class="text-gray-300 text-base leading-relaxed mb-8 max-w-xl">
+          Apple's most affordable laptop ever — A18 Pro chip, 13-inch Liquid Retina display, all-day battery life, and Apple Intelligence. Starting at just $699. A comprehensive evaluation covering pricing, specs, expert reviews, user feedback, and competitive positioning.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="#overview" style="background:#fff;color:#1a1a1a;font-weight:700;font-size:14px;padding:11px 24px;border-radius:10px;">Read Report</a>
+          <a href="index.html" style="border:1.5px solid rgba(255,255,255,0.2);color:#d1d5db;font-weight:600;font-size:14px;padding:11px 24px;border-radius:10px;">Back to Hub</a>
+        </div>
+      </div>
+      <div>
+        <div class="gallery-main">
+          <img id="galleryMain" src="https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM92uVo" alt="Apple MacBook Neo"/>
+        </div>
+        <div class="gallery-thumbs">
+          <div class="gallery-thumb active" onclick="switchImg(this,'https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM92uVo')"><img src="https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM92uVo" alt="front"/></div>
+          <div class="gallery-thumb" onclick="switchImg(this,'https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM91lC5')"><img src="https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM91lC5" alt="colors"/></div>
+          <div class="gallery-thumb" onclick="switchImg(this,'https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM92JZh')"><img src="https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM92JZh" alt="open"/></div>
+          <div class="gallery-thumb" onclick="switchImg(this,'https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM90Hfq')"><img src="https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM90Hfq" alt="side"/></div>
+        </div>
+        <div class="grid grid-cols-4 gap-3 mt-4">
+          <div class="stat-card text-center py-3 px-2"><div class="text-xl font-bold text-gray-200">$699</div><div class="text-gray-400 text-xs mt-0.5">From</div></div>
+          <div class="stat-card text-center py-3 px-2"><div class="text-xl font-bold text-gray-200">1.23kg</div><div class="text-gray-400 text-xs mt-0.5">Weight</div></div>
+          <div class="stat-card text-center py-3 px-2"><div class="text-xl font-bold text-gray-200">16h</div><div class="text-gray-400 text-xs mt-0.5">Battery</div></div>
+          <div class="stat-card text-center py-3 px-2"><div class="text-xl font-bold text-gray-200">A18P</div><div class="text-gray-400 text-xs mt-0.5">Chip</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S01: OVERVIEW -->
+<section id="overview" class="py-14 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#6b7280;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 01</p>
+      <h2 class="text-2xl font-bold text-slate-800">Launch Overview &nbsp;·&nbsp; Timeline &nbsp;·&nbsp; Pricing</h2>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-2">
+        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Launch Timeline</h3>
+        <div class="relative pl-12">
+          <div style="position:absolute;left:19px;top:32px;bottom:0;width:2px;background:linear-gradient(to bottom,#1a1a1a,#d1d5db);"></div>
+          <div class="space-y-6">
+            <div class="flex gap-4 items-start relative">
+              <div class="tl-dot">1</div>
+              <div class="bg-slate-50 rounded-xl p-4 flex-1 border border-slate-100">
+                <div class="text-xs font-bold text-gray-600 mb-1">March 4, 2026</div>
+                <div class="font-semibold text-slate-800 text-sm">MacBook Neo Announced</div>
+                <div class="text-slate-500 text-xs mt-1">Unveiled at Apple Spring Event — "most affordable Mac laptop ever"</div>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start relative">
+              <div class="tl-dot">2</div>
+              <div class="bg-slate-50 rounded-xl p-4 flex-1 border border-slate-100">
+                <div class="text-xs font-bold text-gray-600 mb-1">March 11, 2026</div>
+                <div class="font-semibold text-slate-800 text-sm">Available to Order and Ship</div>
+                <div class="text-slate-500 text-xs mt-1">Ships in Midnight, Starlight, Sky Blue, and Pink</div>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start relative">
+              <div class="tl-dot">3</div>
+              <div class="bg-slate-50 rounded-xl p-4 flex-1 border border-slate-100">
+                <div class="text-xs font-bold text-gray-600 mb-1">March 2026 (Ongoing)</div>
+                <div class="font-semibold text-slate-800 text-sm">Education Pricing Active</div>
+                <div class="text-slate-500 text-xs mt-1">$499 for students and educators — unprecedented Apple value</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-3">
+        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Full SKU Lineup and Pricing</h3>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Edition</th><th>RAM</th><th>Storage</th><th>Price (USD)</th><th>Edu Price</th><th>Tag</th></tr></thead>
+            <tbody>
+              <tr><td>MacBook Neo (Base)</td><td>8GB</td><td>256GB SSD</td><td class="font-bold" style="color:#1a1a1a;">$699</td><td class="font-semibold text-green-700">$499</td><td><span class="badge badge-green">Best Value</span></td></tr>
+              <tr><td>MacBook Neo (Mid)</td><td>8GB</td><td>512GB SSD</td><td class="font-bold" style="color:#1a1a1a;">$799</td><td class="font-semibold text-green-700">$599</td><td><span class="badge badge-dark">Includes Touch ID</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-4 p-4 bg-green-50 rounded-xl border border-green-100 text-sm text-green-700">
+          <span class="font-semibold">Value Note:</span> At $699, the MacBook Neo is $300 cheaper than the base MacBook Air M5 — the lowest entry point to macOS ever. Education pricing at $499 makes it accessible to virtually all students.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S02: SPECS -->
+<section id="specs" class="py-14 px-6 bg-slate-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#6b7280;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 02</p>
+      <h2 class="text-2xl font-bold text-slate-800">Technical Specifications</h2>
+      <p class="text-slate-500 text-sm mt-1">Apple A18 Pro &nbsp;·&nbsp; macOS 27 &nbsp;·&nbsp; Official spec sheet</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card p-6">
+        <h3 class="font-bold text-slate-800 mb-5">Platform and System</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">OS</span><span class="font-semibold text-slate-800">macOS 27</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Chip</span><span class="font-bold" style="color:#1a1a1a;">Apple A18 Pro</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">CPU</span><span class="font-semibold text-slate-800">6-core (2P + 4E)</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">GPU</span><span class="font-semibold text-slate-800">5-core</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Neural Engine</span><span class="font-semibold text-slate-800">16-core</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Memory BW</span><span class="font-semibold text-slate-800">60 GB/s</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">RAM</span><span class="font-semibold text-red-600">8GB Unified (only option)</span></div>
+          <div class="flex justify-between py-2 text-sm"><span class="text-slate-500 font-medium">Storage</span><span class="font-semibold text-slate-800">256GB / 512GB SSD</span></div>
+        </div>
+      </div>
+      <div class="card p-6">
+        <h3 class="font-bold text-slate-800 mb-5">Display</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Size / Type</span><span class="font-bold" style="color:#1a1a1a;">13.0" LED IPS</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Branding</span><span class="font-semibold text-slate-800">Liquid Retina</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Resolution</span><span class="font-bold" style="color:#1a1a1a;">2408x1506, 219 PPI</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Brightness</span><span class="font-semibold text-slate-800">500 nits</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Color</span><span class="font-semibold text-slate-800">sRGB, 1 billion colors</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Refresh Rate</span><span class="font-semibold text-red-600">60Hz (no ProMotion)</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Panel Type</span><span class="font-semibold text-red-600">LCD (no OLED)</span></div>
+          <div class="flex justify-between py-2 text-sm"><span class="text-slate-500 font-medium">Touch</span><span class="font-semibold text-slate-800">No</span></div>
+        </div>
+      </div>
+      <div class="card p-6">
+        <h3 class="font-bold text-slate-800 mb-5">Battery and Connectivity</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Battery</span><span class="font-semibold text-slate-800">36.5 Wh Li-ion</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Video Streaming</span><span class="font-bold" style="color:#1a1a1a;">Up to 16 hours</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Web Browsing</span><span class="font-semibold text-slate-800">Up to 11 hours</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Charger</span><span class="font-semibold text-slate-800">20W USB-C</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Ports</span><span class="font-semibold text-red-600 text-xs">1x USB 3 + 1x USB 2 + 3.5mm</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Wi-Fi</span><span class="font-semibold text-slate-800">Wi-Fi 6E (802.11ax)</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Bluetooth</span><span class="font-semibold text-slate-800">6.0</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Weight</span><span class="font-semibold text-slate-800">1.23 kg (2.7 lbs)</span></div>
+          <div class="flex justify-between py-2 text-sm"><span class="text-slate-500 font-medium">Thickness</span><span class="font-semibold text-slate-800">1.27 cm (0.50 in)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S03: HIGHLIGHTS -->
+<section id="highlights" class="py-14 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#6b7280;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 03</p>
+      <h2 class="text-2xl font-bold text-slate-800">Key Marketing Highlights and Core Innovations</h2>
+      <p class="text-slate-500 text-sm mt-1">What Apple says makes the MacBook Neo special</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="card card-hover p-6" style="border-left:4px solid #1a1a1a;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#1a1a1a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">01</span>
+          <h4 class="font-bold text-slate-800 text-sm">Apple's Most Affordable Mac Laptop Ever</h4>
+          <span class="badge badge-green ml-auto">Historic</span>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">At <strong class="text-slate-700">$699 ($499 for education)</strong>, the MacBook Neo breaks Apple's pricing floor for laptops, opening macOS to a completely new audience for the first time in Apple's history.</p>
+      </div>
+      <div class="card card-hover p-6" style="border-left:4px solid #1a1a1a;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#1a1a1a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">02</span>
+          <h4 class="font-bold text-slate-800 text-sm">A18 Pro Chip — No Performance Compromise</h4>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">Despite the entry price, the MacBook Neo uses the <strong class="text-slate-700">same A18 Pro chip</strong> as iPhone 16 Pro. 6-core CPU, 5-core GPU, 16-core Neural Engine — genuinely fast for all everyday tasks and light creative work.</p>
+      </div>
+      <div class="card card-hover p-6" style="border-left:4px solid #1a1a1a;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#1a1a1a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">03</span>
+          <h4 class="font-bold text-slate-800 text-sm">Apple Intelligence — On-Device AI</h4>
+          <span class="badge badge-dark ml-auto">New</span>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">Full <strong class="text-slate-700">Apple Intelligence</strong> support: Writing Tools, Image Playground, Genmoji, Priority Notifications, and Siri with personal context — all running on-device with Private Cloud Compute for sensitive tasks.</p>
+      </div>
+      <div class="card card-hover p-6" style="border-left:4px solid #6b7280;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#6b7280;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">04</span>
+          <h4 class="font-bold text-slate-800 text-sm">All-Day Battery Life</h4>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">Up to <strong class="text-slate-700">16 hours</strong> of video streaming on a 36.5Wh battery — thanks to the efficiency of the A18 Pro chip. Real-world testing confirms 10 to 13 hours in daily mixed use.</p>
+      </div>
+      <div class="card card-hover p-6" style="border-left:4px solid #6b7280;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#6b7280;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">05</span>
+          <h4 class="font-bold text-slate-800 text-sm">iPhone Mirroring and Cross-Device Continuity</h4>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed"><strong class="text-slate-700">iPhone Mirroring</strong> lets you use your iPhone directly on the Mac screen. Handoff, AirDrop, Universal Clipboard, Sidecar, and AirPlay to Mac all work seamlessly out of the box with no configuration.</p>
+      </div>
+      <div class="card card-hover p-6" style="border-left:4px solid #6b7280;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#6b7280;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">06</span>
+          <h4 class="font-bold text-slate-800 text-sm">Premium Aluminum Build at Entry Price</h4>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">Full <strong class="text-slate-700">CNC-machined aluminum unibody</strong> — no plastic, no flex, no creaks. Available in four colors: Midnight, Starlight, Sky Blue, and Pink. A premium feel at an unprecedented price point.</p>
+      </div>
+      <div class="card card-hover p-6 md:col-span-2 lg:col-span-1" style="border-left:4px solid #6b7280;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#6b7280;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">07</span>
+          <h4 class="font-bold text-slate-800 text-sm">Privacy and Security by Design</h4>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed"><strong class="text-slate-700">Private Cloud Compute</strong> ensures AI tasks stay private. Touch ID on the $799 model. Secure Enclave, FileVault, and Gatekeeper all built-in. Hardware microphone disconnect switch on all models.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S04: REVIEWS -->
+<section id="reviews" class="py-14 px-6 bg-slate-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#6b7280;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 04</p>
+      <h2 class="text-2xl font-bold text-slate-800">Professional Media and Expert Review Summary</h2>
+      <p class="text-slate-500 text-sm mt-1">Sources: CNET &nbsp;·&nbsp; PCMag &nbsp;·&nbsp; ZDNet &nbsp;·&nbsp; Tom's Guide &nbsp;·&nbsp; The Verge &nbsp;·&nbsp; Ars Technica — March to April 2026</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+      <div class="card p-5 text-center"><div class="text-2xl font-bold mb-1" style="color:#1a1a1a;">7.5</div><div class="score-bar-bg mb-2"><div class="score-bar-fill" style="width:75%"></div></div><div class="text-xs text-slate-500 font-medium">Portability</div></div>
+      <div class="card p-5 text-center"><div class="text-2xl font-bold mb-1" style="color:#1a1a1a;">8.0</div><div class="score-bar-bg mb-2"><div class="score-bar-fill" style="width:80%"></div></div><div class="text-xs text-slate-500 font-medium">Performance</div></div>
+      <div class="card p-5 text-center"><div class="text-2xl font-bold mb-1" style="color:#1a1a1a;">7.5</div><div class="score-bar-bg mb-2"><div class="score-bar-fill" style="width:75%"></div></div><div class="text-xs text-slate-500 font-medium">Display</div></div>
+      <div class="card p-5 text-center"><div class="text-2xl font-bold mb-1" style="color:#1a1a1a;">8.0</div><div class="score-bar-bg mb-2"><div class="score-bar-fill" style="width:80%"></div></div><div class="text-xs text-slate-500 font-medium">Battery</div></div>
+      <div class="card p-5 text-center"><div class="text-2xl font-bold mb-1" style="color:#1a1a1a;">9.5</div><div class="score-bar-bg mb-2"><div class="score-bar-fill" style="width:95%"></div></div><div class="text-xs text-slate-500 font-medium">Value for Money</div></div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="card p-6">
+        <div class="flex items-center gap-2 mb-5">
+          <span style="width:24px;height:24px;border-radius:50%;background:#dcfce7;color:#166534;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">V</span>
+          <h3 class="font-bold text-slate-800">Consensus Strengths (6 Points)</h3>
+        </div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">Unbeatable Entry Price</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">$699 is the lowest entry point for a Mac laptop ever — $300 less than MacBook Air M5. Education pricing at $499 is extraordinary and opens macOS to students worldwide.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">A18 Pro Performance</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Despite entry pricing, A18 Pro chip delivers impressive performance for everyday tasks — faster than many mid-range Windows laptops at 2x the price.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">Battery Life</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">16h rated video streaming; real-world testing confirms 10 to 13h in daily use. Exceptional for the price bracket, powered by ARM efficiency.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">Apple Ecosystem Integration</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Seamless integration with iPhone, iPad, AirPods. iPhone Mirroring, Handoff, AirDrop, and Universal Clipboard all work flawlessly out of the box.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">Premium Build Quality</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Full aluminum unibody feels premium despite the entry price. No flex, no creaks. Four attractive color options including the new Sky Blue and Pink.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">Apple Intelligence</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Full on-device AI suite with Private Cloud Compute — unique to Apple at this price point. Writing Tools, Genmoji, Image Playground, and enhanced Siri all included.</div></div></div>
+      </div>
+      <div class="card p-6">
+        <div class="flex items-center gap-2 mb-5">
+          <span style="width:24px;height:24px;border-radius:50%;background:#fee2e2;color:#991b1b;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">X</span>
+          <h3 class="font-bold text-slate-800">Key Weaknesses (5 Points)</h3>
+        </div>
+        <div class="pro-item"><div class="pro-dot-neg">-</div><div><div class="font-semibold text-slate-700 text-sm">No OLED, No ProMotion</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">60Hz LCD IPS display is a clear step down from MacBook Air. No 120Hz, no OLED, no True Tone at base model. Noticeable when compared side by side with competitors.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-neg">-</div><div><div class="font-semibold text-slate-700 text-sm">Only 8GB RAM — No Upgrade Path</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">8GB unified memory is the sole option with no upgrade path. Multi-tasking with many browser tabs, large spreadsheets, or any video editing can feel constrained.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-neg">-</div><div><div class="font-semibold text-slate-700 text-sm">Minimal Port Selection</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Only 2 USB-C ports (one USB 3, one USB 2 speed only) — no MagSafe, no HDMI, no SD card. A hub is necessary for most real-world workflows.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-neg">-</div><div><div class="font-semibold text-slate-700 text-sm">No Touch ID on Base Model</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">The $699 base model ships without Touch ID. Only the $799 model includes the Magic Keyboard with Touch ID — a notable omission at any price.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-neg">-</div><div><div class="font-semibold text-slate-700 text-sm">sRGB Only — No P3 Wide Color</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">No P3 wide color gamut. The display covers sRGB only, making it unsuitable for professional photo or video color grading work.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S05: USER FEEDBACK -->
+<section id="users" class="py-14 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#6b7280;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 05</p>
+      <h2 class="text-2xl font-bold text-slate-800">End-User Feedback and Sentiment Analysis</h2>
+      <p class="text-slate-500 text-sm mt-1">Aggregated from Apple Store reviews, Reddit, MacRumors forums — March to April 2026</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <span style="width:28px;height:28px;border-radius:50%;background:#22c55e;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;">+</span>
+          <h3 class="font-bold text-slate-800">Top 5 Positive Feedback</h3>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th style="width:5%">#</th><th style="width:22%">Theme</th><th>Representative Comment</th><th style="width:14%">Frequency</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">1</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Price-to-value</td>
+                <td class="text-xs italic text-slate-500">"I cannot believe how fast this is for $699. It beats my old $1,200 Windows laptop in every daily task."</td>
+                <td><span class="badge badge-green">Very High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">2</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Battery life</td>
+                <td class="text-xs italic text-slate-500">"Went through a full 10-hour school day without charging. Never experienced this on any laptop before."</td>
+                <td><span class="badge badge-green">High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">3</span></td>
+                <td class="font-semibold text-slate-700 text-xs">iPhone synergy</td>
+                <td class="text-xs italic text-slate-500">"iPhone Mirroring is a game changer. I have not touched my phone in hours — everything runs through the Mac."</td>
+                <td><span class="badge badge-green">High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">4</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Build quality</td>
+                <td class="text-xs italic text-slate-500">"It feels like a $1,500 laptop. The aluminum is solid, the colors are beautiful. Hard to believe it is $699."</td>
+                <td><span class="badge badge-yellow">Med-High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">5</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Switching from Windows</td>
+                <td class="text-xs italic text-slate-500">"Switched from a $900 Windows laptop. macOS is so much smoother, and it is faster despite costing less."</td>
+                <td><span class="badge badge-yellow">Medium</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <span style="width:28px;height:28px;border-radius:50%;background:#ef4444;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;">-</span>
+          <h3 class="font-bold text-slate-800">Top 5 Negative Feedback</h3>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th style="width:5%">#</th><th style="width:22%">Theme</th><th>Representative Comment</th><th style="width:14%">Impact</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">1</span></td>
+                <td class="font-semibold text-slate-700 text-xs">8GB RAM limit</td>
+                <td class="text-xs italic text-slate-500">"With 20+ Chrome tabs open it starts swapping. 8GB is not enough for serious multitasking in 2026."</td>
+                <td><span class="badge badge-red">High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">2</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Port situation</td>
+                <td class="text-xs italic text-slate-500">"Two USB-C ports and one is basically USB 2 speed. I had to buy a hub on day one. Factor that into the price."</td>
+                <td><span class="badge badge-red">High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">3</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Display quality</td>
+                <td class="text-xs italic text-slate-500">"After using a MacBook Air, the 60Hz display feels sluggish. The colors are also noticeably duller."</td>
+                <td><span class="badge badge-yellow">Medium</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">4</span></td>
+                <td class="font-semibold text-slate-700 text-xs">No Touch ID at base</td>
+                <td class="text-xs italic text-slate-500">"Paying $699 and having to type my password every time is frustrating. Touch ID should be standard."</td>
+                <td><span class="badge badge-yellow">Medium</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">5</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Non-Apple users</td>
+                <td class="text-xs italic text-slate-500">"I use Android — all the ecosystem features are useless to me. Just a decent cheap laptop with limited ports."</td>
+                <td><span class="badge badge-yellow">Medium</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S06: GUIDANCE -->
+<section id="guidance" class="py-14 px-6 bg-slate-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#6b7280;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 06</p>
+      <h2 class="text-2xl font-bold text-slate-800">Target Audience and Purchase Guidance</h2>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="card p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <span style="width:32px;height:32px;border-radius:50%;background:#dcfce7;color:#166534;display:flex;align-items:center;justify-content:center;font-size:16px;">V</span>
+          <h3 class="font-bold text-slate-800">Strongly Recommended</h3>
+        </div>
+        <div class="table-wrap mb-4">
+          <table class="data-table">
+            <thead><tr><th>Target User</th><th>Primary Use Case</th><th>Rationale</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold text-slate-700 text-xs">Students</td><td class="text-xs text-slate-500">Coursework, essays, light coding, web research</td><td class="text-xs text-slate-500">$499 edu price + great battery + Apple Intelligence</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">First-time Mac users</td><td class="text-xs text-slate-500">Switching from Windows or Chromebook</td><td class="text-xs text-slate-500">Lowest barrier to entry for macOS ever</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">iPhone / iPad power users</td><td class="text-xs text-slate-500">Cross-device workflows, iPhone Mirroring</td><td class="text-xs text-slate-500">Seamless Apple ecosystem integration</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Everyday productivity users</td><td class="text-xs text-slate-500">Email, docs, web browsing, video calls</td><td class="text-xs text-slate-500">A18 Pro handles all daily tasks effortlessly</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Budget-conscious buyers</td><td class="text-xs text-slate-500">Need a reliable laptop under $700</td><td class="text-xs text-slate-500">Best value laptop in the Apple lineup by far</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="verdict-rec p-4 text-sm"><span class="font-bold text-green-800">Editorial Verdict:</span> <span class="text-green-700">Best budget Mac ever. If you are in the Apple ecosystem and do not need a pro-level display or heavy multitasking, this is the obvious choice at $699.</span></div>
+      </div>
+      <div class="card p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <span style="width:32px;height:32px;border-radius:50%;background:#ffedd5;color:#9a3412;display:flex;align-items:center;justify-content:center;font-size:16px;">!</span>
+          <h3 class="font-bold text-slate-800">Proceed with Caution</h3>
+        </div>
+        <div class="table-wrap mb-4">
+          <table class="data-table">
+            <thead><tr><th>User Profile</th><th>Risk Scenario</th><th>Alternative</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold text-slate-700 text-xs">Creative professionals</td><td class="text-xs text-slate-500">Need P3 color, ProMotion, OLED display</td><td class="text-xs text-slate-500">MacBook Air M5 or MacBook Pro</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Heavy multitaskers</td><td class="text-xs text-slate-500">8GB RAM ceiling is limiting for power users</td><td class="text-xs text-slate-500">MacBook Air M5 (16GB base RAM)</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Multi-peripheral users</td><td class="text-xs text-slate-500">Need HDMI, SD card, more USB ports</td><td class="text-xs text-slate-500">Dell XPS 14 or MateBook Pro S</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Windows ecosystem users</td><td class="text-xs text-slate-500">Need .exe / .msi software compatibility</td><td class="text-xs text-slate-500">Dell XPS 14 (2026)</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Android / non-Apple users</td><td class="text-xs text-slate-500">Ecosystem features irrelevant without Apple devices</td><td class="text-xs text-slate-500">MateBook Pro S or Windows laptop</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="verdict-cau p-4 text-sm"><span class="font-bold text-orange-800">Key Limitation:</span> <span class="text-orange-700">The 8GB RAM cap and 60Hz sRGB display are real constraints. For $300 more, the MacBook Air M5 offers 16GB RAM, a far better display, MagSafe, and more ports. Consider the upgrade if budget allows.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S07: COMPARISON -->
+<section id="comparison" class="py-14 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#6b7280;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 07</p>
+      <h2 class="text-2xl font-bold text-slate-800">Competitive Landscape Analysis</h2>
+      <p class="text-slate-500 text-sm mt-1">MacBook Neo vs. HUAWEI MateBook Pro S vs. Dell XPS 14 (2026)</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div class="lg:col-span-1 card p-6 flex flex-col items-center">
+        <h3 class="text-sm font-bold text-slate-600 uppercase tracking-wide mb-4">Capability Radar</h3>
+        <canvas id="radarChart" width="300" height="300"></canvas>
+      </div>
+      <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-5 rounded-xl" style="background:#f5f5f5;border-left:4px solid #1a1a1a;">
+          <div class="font-bold text-gray-900 text-sm mb-2">Apple MacBook Neo</div>
+          <div class="text-gray-600 text-xs leading-relaxed">Best value at $699<br/>A18 Pro chip performance<br/>16h battery life<br/>Full Apple ecosystem<br/>Limited to 8GB RAM<br/>60Hz LCD (no OLED)</div>
+        </div>
+        <div class="p-5 rounded-xl" style="background:#e8f0fb;border-left:4px solid #1b3a6b;">
+          <div class="font-bold text-blue-900 text-sm mb-2">HUAWEI MateBook Pro S</div>
+          <div class="text-blue-700 text-xs leading-relaxed">Lightest 14" at 798g<br/>Best OLED display (3.1K 120Hz)<br/>18h battery life<br/>Hardware privacy screen<br/>HarmonyOS ecosystem<br/>From CNY 7,999</div>
+        </div>
+        <div class="p-5 rounded-xl" style="background:#e0f2fe;border-left:4px solid #007db8;">
+          <div class="font-bold text-blue-900 text-sm mb-2">Dell XPS 14 (2026)</div>
+          <div class="text-blue-700 text-xs leading-relaxed">Top CPU performance<br/>2.8K OLED 120Hz touch<br/>Most ports (TB4 + HDMI + SD)<br/>32 to 64GB RAM options<br/>Heaviest at 1.36kg<br/>Shortest battery (~12h)</div>
+        </div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:16%">Dimension</th>
+            <th class="our-col" style="width:28%">Apple MacBook Neo</th>
+            <th style="width:28%">HUAWEI MateBook Pro S</th>
+            <th style="width:28%">Dell XPS 14 (2026)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="row-label">Starting Price</td><td class="our-col font-bold" style="color:#166534;">$699 — Lowest</td><td>CNY 7,999 (~$1,099)</td><td class="text-red-600">$2,069 — Highest</td></tr>
+          <tr><td class="row-label">Weight</td><td class="our-col">1.23kg</td><td class="font-bold" style="color:#1b3a6b;">798g — Lightest</td><td class="text-red-600">1.36kg — Heaviest</td></tr>
+          <tr><td class="row-label">Processor</td><td class="our-col">Apple A18 Pro</td><td>Kirin XE90 (20W)</td><td class="font-bold" style="color:#007db8;">Intel Core Ultra X7 — Fastest</td></tr>
+          <tr><td class="row-label">Display</td><td class="our-col text-red-600">13" LCD 60Hz sRGB</td><td class="font-bold" style="color:#1b3a6b;">14.2" OLED 3.1K 120Hz — Best</td><td>14" OLED 2.8K 120Hz Touch</td></tr>
+          <tr><td class="row-label">Battery Life</td><td class="our-col">16h rated / 10–13h real</td><td class="font-bold" style="color:#1b3a6b;">18h rated — Longest</td><td class="text-red-600">~12h — Shortest</td></tr>
+          <tr><td class="row-label">RAM</td><td class="our-col text-red-600">8GB only — No upgrade</td><td>16–32GB</td><td class="font-bold" style="color:#007db8;">32–64GB — Most</td></tr>
+          <tr><td class="row-label">Ports</td><td class="our-col text-red-600">2x USB-C (1x USB 2 only)</td><td class="text-red-600">2x USB-C</td><td class="font-bold" style="color:#007db8;">TB4x2 + USB-A + SD + HDMI</td></tr>
+          <tr><td class="row-label">OS</td><td class="our-col">macOS 27</td><td>HarmonyOS 6.1</td><td class="font-bold" style="color:#007db8;">Windows 11 — Widest compat.</td></tr>
+          <tr><td class="row-label">Privacy Screen</td><td class="our-col text-red-600">None</td><td class="font-bold" style="color:#1b3a6b;">Hardware Lingdun (opt.) — Unique</td><td class="text-red-600">None</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-slate-900 text-slate-400 py-10 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex justify-center gap-6 flex-wrap mb-6">
+      <a href="index.html" class="text-sm hover:text-white transition-colors">Back to Hub</a>
+      <a href="matebook-pro-s.html" class="text-sm hover:text-white transition-colors">MateBook Pro S</a>
+      <a href="macbook-neo.html" class="text-sm hover:text-white transition-colors">MacBook Neo</a>
+      <a href="dell-xps-14.html" class="text-sm hover:text-white transition-colors">Dell XPS 14</a>
+    </div>
+    <p class="text-center text-xs">Sources: Apple Newsroom &nbsp;·&nbsp; apple.com/macbook-neo/specs &nbsp;·&nbsp; CNET &nbsp;·&nbsp; PCMag &nbsp;·&nbsp; ZDNet &nbsp;·&nbsp; Tom's Guide &nbsp;·&nbsp; The Verge &nbsp;·&nbsp; September 2026 &nbsp;·&nbsp; For reference only</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('navContainer').innerHTML = renderNav('macbook-neo');
+function switchImg(t, s) {
+  document.getElementById('galleryMain').src = s;
+  document.querySelectorAll('.gallery-thumb').forEach(function(x) { x.classList.remove('active'); });
+  t.classList.add('active');
+}
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var target = document.querySelector(a.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' });
+  });
+});
+var sections = document.querySelectorAll('section[id]');
+var navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+function updateActiveNav() {
+  var current = '';
+  sections.forEach(function(sec) { if (sec.getBoundingClientRect().top <= 70) current = sec.getAttribute('id'); });
+  navLinks.forEach(function(link) { link.classList.toggle('active', link.getAttribute('href') === '#' + current); });
+}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+var ctx = document.getElementById('radarChart').getContext('2d');
+new Chart(ctx, {
+  type: 'radar',
+  data: {
+    labels: ['Portability', 'Performance', 'Display', 'Battery', 'Ecosystem', 'Value'],
+    datasets: [
+      { label: 'MacBook Neo', data: [7.5, 8.0, 7.5, 8.0, 9.0, 9.5], borderColor: '#1a1a1a', backgroundColor: 'rgba(26,26,26,0.12)', borderWidth: 2.5, pointBackgroundColor: '#1a1a1a', pointRadius: 4 },
+      { label: 'MateBook Pro S', data: [9.5, 7.5, 9.5, 8.5, 9.0, 7.0], borderColor: '#1b3a6b', backgroundColor: 'rgba(27,58,107,0.1)', borderWidth: 2, pointBackgroundColor: '#1b3a6b', pointRadius: 4 },
+      { label: 'Dell XPS 14', data: [6.5, 9.0, 9.0, 7.0, 8.5, 6.5], borderColor: '#007db8', backgroundColor: 'rgba(0,125,184,0.08)', borderWidth: 2, pointBackgroundColor: '#007db8', pointRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 12, padding: 8 } } },
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, font: { size: 9 }, color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.2)' }, pointLabels: { font: { size: 10, weight: '600' }, color: '#475569' } } }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dell XPS 14 (2026) — Competitive Analysis</title>
+<script src="https://resource.bantouyan.com/js/tailwind@3.4.16.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="shared.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter','Helvetica Neue',Arial,sans-serif;background:#f0f4f8;color:#1e293b}
+section[id]{scroll-margin-top:60px}
+.hero{background:linear-gradient(135deg,#003d5c 0%,#005f8e 50%,#007db8 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.1) 0%,transparent 70%)}
+.stat-card{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:20px 24px}
+.section-header{position:relative;padding-left:16px}
+.section-header::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:4px;background:#007db8;border-radius:2px}
+.card{background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04)}
+.card-hover{transition:transform 0.2s,box-shadow 0.2s}
+.card-hover:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,125,184,0.14)}
+.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.data-table thead{background:#007db8}
+.data-table thead th{padding:12px 16px;text-align:left;color:#fff;font-weight:600;font-size:12.5px;letter-spacing:0.3px}
+.data-table thead th.our-col{background:#0099d6}
+.data-table tbody tr{border-bottom:1px solid #e8f0f8;transition:background 0.15s}
+.data-table tbody tr:hover{background:#f0f7ff}
+.data-table tbody tr:nth-child(even){background:#f7fafd}
+.data-table tbody td{padding:11px 16px;vertical-align:middle;line-height:1.5}
+.data-table tbody td.row-label{font-weight:700;color:#005f8e;background:#e0f2fe!important;width:14%;white-space:nowrap}
+.data-table tbody td.our-col{background:#e8f4fd;font-weight:600}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.3px}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-yellow{background:#fef9c3;color:#854d0e}
+.badge-dell{background:#007db8;color:#fff}
+.badge-blue{background:#dbeafe;color:#1d4ed8}
+.badge-navy{background:#1b3a6b;color:#fff}
+.score-bar-bg{background:#e2e8f0;border-radius:99px;height:8px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#007db8,#38bdf8);transition:width 1s ease}
+.pro-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f0f4f8}
+.pro-item:last-child{border-bottom:none}
+.pro-dot-pos{width:22px;height:22px;border-radius:50%;background:#dcfce7;color:#166534;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px}
+.pro-dot-neg{width:22px;height:22px;border-radius:50%;background:#fee2e2;color:#991b1b;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px}
+.verdict-rec{background:#f0fdf4;border-left:4px solid #22c55e;border-radius:0 10px 10px 0}
+.verdict-cau{background:#fff7ed;border-left:4px solid #f97316;border-radius:0 10px 10px 0}
+.gallery-main{border-radius:16px;overflow:hidden;background:#e0f2fe;border:1px solid #bfdbfe}
+.gallery-main img{width:100%;height:280px;object-fit:contain;padding:16px}
+.gallery-thumbs{display:flex;gap:10px;margin-top:12px}
+.gallery-thumb{flex:1;border-radius:10px;overflow:hidden;border:2px solid #bfdbfe;cursor:pointer;transition:border-color 0.2s;background:#e0f2fe}
+.gallery-thumb:hover,.gallery-thumb.active{border-color:#007db8}
+.gallery-thumb img{width:100%;height:72px;object-fit:contain;padding:8px}
+.table-wrap{overflow-x:auto;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.tl-dot{width:40px;height:40px;border-radius:50%;background:#007db8;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;z-index:1;box-shadow:0 0 0 4px rgba(0,125,184,0.15);position:absolute;left:-48px}
+a{text-decoration:none}
+</style>
+</head>
+<body>
+<div id="navContainer"></div>
+
+<!-- HERO -->
+<section class="hero py-16 px-6">
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="mb-5">
+      <span style="display:inline-flex;align-items:center;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#bae6fd;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;">Premium &nbsp;·&nbsp; Dell &nbsp;·&nbsp; February 2026</span>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#7dd3fc;letter-spacing:1px;margin-bottom:8px;">DELL</div>
+        <h1 class="text-4xl lg:text-5xl font-bold text-white leading-tight mb-4">
+          XPS 14 (2026)
+          <span class="block text-blue-200 text-3xl font-light mt-1">Competitive Analysis Report</span>
+        </h1>
+        <p class="text-blue-100 text-base leading-relaxed mb-8 max-w-xl">
+          Dell's premium Windows ultrabook comeback — Intel Core Ultra X7 Panther Lake, 2.8K OLED touchscreen, 32GB RAM, Thunderbolt 4, and a redesigned chassis. Starting at $2,069. A comprehensive evaluation covering pricing, specs, expert reviews, user feedback, and competitive positioning.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="#overview" style="background:#fff;color:#007db8;font-weight:700;font-size:14px;padding:11px 24px;border-radius:10px;">Read Report</a>
+          <a href="index.html" style="border:1.5px solid rgba(255,255,255,0.2);color:#bae6fd;font-weight:600;font-size:14px;padding:11px 24px;border-radius:10px;">Back to Hub</a>
+        </div>
+      </div>
+      <div>
+        <div class="gallery-main">
+          <img id="galleryMain" src="https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM94r6Y" alt="Dell XPS 14 2026"/>
+        </div>
+        <div class="gallery-thumbs">
+          <div class="gallery-thumb active" onclick="switchImg(this,'https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM94r6Y')"><img src="https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM94r6Y" alt="XPS 14 front"/></div>
+          <div class="gallery-thumb" onclick="switchImg(this,'https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM92ZZO')"><img src="https://nova-api.betteryeah.com/v1/super_agent/chat/file/AGM92ZZO" alt="XPS 14 open"/></div>
+        </div>
+        <div class="grid grid-cols-4 gap-3 mt-4">
+          <div class="stat-card text-center py-3 px-2"><div class="text-xl font-bold text-blue-100">$2,069</div><div class="text-blue-300 text-xs mt-0.5">From</div></div>
+          <div class="stat-card text-center py-3 px-2"><div class="text-xl font-bold text-blue-100">1.36kg</div><div class="text-blue-300 text-xs mt-0.5">Weight</div></div>
+          <div class="stat-card text-center py-3 px-2"><div class="text-xl font-bold text-blue-100">~12h</div><div class="text-blue-300 text-xs mt-0.5">Battery</div></div>
+          <div class="stat-card text-center py-3 px-2"><div class="text-xl font-bold text-blue-100">2.8K</div><div class="text-blue-300 text-xs mt-0.5">OLED Touch</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S01: OVERVIEW -->
+<section id="overview" class="py-14 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#0369a1;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 01</p>
+      <h2 class="text-2xl font-bold text-slate-800">Launch Overview &nbsp;·&nbsp; Timeline &nbsp;·&nbsp; Pricing</h2>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-2">
+        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Launch Timeline</h3>
+        <div class="relative pl-12">
+          <div style="position:absolute;left:19px;top:32px;bottom:0;width:2px;background:linear-gradient(to bottom,#007db8,#bae6fd);"></div>
+          <div class="space-y-6">
+            <div class="flex gap-4 items-start relative">
+              <div class="tl-dot">1</div>
+              <div class="bg-blue-50 rounded-xl p-4 flex-1 border border-blue-100">
+                <div class="text-xs font-bold text-blue-600 mb-1">January 2026</div>
+                <div class="font-semibold text-slate-800 text-sm">Dell XPS 14 (2026) Unveiled at CES</div>
+                <div class="text-slate-500 text-xs mt-1">Announced with Intel Panther Lake — "XPS is Back" messaging</div>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start relative">
+              <div class="tl-dot">2</div>
+              <div class="bg-blue-50 rounded-xl p-4 flex-1 border border-blue-100">
+                <div class="text-xs font-bold text-blue-600 mb-1">February 17, 2026</div>
+                <div class="font-semibold text-slate-800 text-sm">First Reviews Published</div>
+                <div class="text-slate-500 text-xs mt-1">Tom's Hardware, HotHardware, Tweaktown — widely praised as a comeback</div>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start relative">
+              <div class="tl-dot">3</div>
+              <div class="bg-blue-50 rounded-xl p-4 flex-1 border border-blue-100">
+                <div class="text-xs font-bold text-blue-600 mb-1">April 2026</div>
+                <div class="font-semibold text-slate-800 text-sm">Widely Available Globally</div>
+                <div class="text-slate-500 text-xs mt-1">Available at Dell.com and major retailers from $2,069.99</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-3">
+        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Full SKU Lineup and Pricing</h3>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Config</th><th>CPU</th><th>RAM</th><th>Storage</th><th>Price (USD)</th><th>Tag</th></tr></thead>
+            <tbody>
+              <tr><td>Base</td><td>Core Ultra 5 325</td><td>32GB</td><td>1TB</td><td class="font-bold" style="color:#007db8;">$1,599</td><td><span class="badge badge-blue">Entry Point</span></td></tr>
+              <tr><td>Mid</td><td>Core Ultra X7 358H</td><td>32GB</td><td>1TB</td><td class="font-bold" style="color:#007db8;">$2,069</td><td><span class="badge badge-dell">Most Popular</span></td></tr>
+              <tr><td>High</td><td>Core Ultra X7 388H</td><td>64GB</td><td>2TB</td><td class="font-bold" style="color:#007db8;">$2,799+</td><td><span class="badge badge-blue">Max Config</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-4 p-4 rounded-xl border text-sm" style="background:#eff6ff;border-color:#bfdbfe;color:#1e40af;">
+          <span class="font-semibold">Note:</span> All configurations include the 14" 2.8K OLED 120Hz touchscreen, Intel Arc integrated GPU, Windows 11, and Thunderbolt 4. The XPS 14 is positioned as a true premium Windows ultrabook competing directly with MacBook Pro 14".
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S02: SPECS -->
+<section id="specs" class="py-14 px-6 bg-slate-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#0369a1;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 02</p>
+      <h2 class="text-2xl font-bold text-slate-800">Technical Specifications</h2>
+      <p class="text-slate-500 text-sm mt-1">Intel Core Ultra X7 (Panther Lake) &nbsp;·&nbsp; Windows 11 &nbsp;·&nbsp; Official spec sheet</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="card p-6">
+        <h3 class="font-bold text-slate-800 mb-5">Platform and System</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">OS</span><span class="font-semibold text-slate-800">Windows 11 Home / Pro</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Processor</span><span class="font-bold" style="color:#007db8;">Intel Core Ultra X7</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Architecture</span><span class="font-semibold text-slate-800">Panther Lake</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Geekbench 6 SC</span><span class="font-semibold text-slate-800">~2,867</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Geekbench 6 MC</span><span class="font-bold" style="color:#007db8;">~16,927</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">GPU</span><span class="font-semibold text-slate-800">Intel Arc (integrated)</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">RAM</span><span class="font-bold" style="color:#007db8;">32GB / 64GB LPDDR5x</span></div>
+          <div class="flex justify-between py-2 text-sm"><span class="text-slate-500 font-medium">Storage</span><span class="font-semibold text-slate-800">1TB / 2TB NVMe SSD</span></div>
+        </div>
+      </div>
+      <div class="card p-6">
+        <h3 class="font-bold text-slate-800 mb-5">Display</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Size / Type</span><span class="font-bold" style="color:#007db8;">14.0" OLED Touch</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Resolution</span><span class="font-bold" style="color:#007db8;">2880x1800 (2.8K)</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Refresh Rate</span><span class="font-semibold text-slate-800">20–120Hz adaptive</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Brightness</span><span class="font-semibold text-slate-800">400 nits (typical)</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Color</span><span class="font-bold" style="color:#007db8;">100% DCI-P3</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Touch</span><span class="font-semibold text-slate-800">Yes, multi-touch</span></div>
+          <div class="flex justify-between py-2 text-sm"><span class="text-slate-500 font-medium">Aspect Ratio</span><span class="font-semibold text-slate-800">16:10</span></div>
+        </div>
+      </div>
+      <div class="card p-6">
+        <h3 class="font-bold text-slate-800 mb-5">Battery and Connectivity</h3>
+        <div class="space-y-2">
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Battery Life</span><span class="text-red-600 font-semibold">~12h real-world</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Charger</span><span class="font-semibold text-slate-800">130W USB-C GaN</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Ports</span><span class="font-bold" style="color:#007db8;font-size:11.5px;">2x TB4 + USB-A + SD + HDMI 2.1</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Wi-Fi</span><span class="font-semibold text-slate-800">Wi-Fi 7 (802.11be)</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Bluetooth</span><span class="font-semibold text-slate-800">5.4</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Webcam</span><span class="font-semibold text-slate-800">1080p IR (Windows Hello)</span></div>
+          <div class="flex justify-between py-2 border-b border-slate-100 text-sm"><span class="text-slate-500 font-medium">Weight</span><span class="font-semibold text-slate-800">1.36 kg (3.00 lbs)</span></div>
+          <div class="flex justify-between py-2 text-sm"><span class="text-slate-500 font-medium">Thickness</span><span class="font-semibold text-slate-800">14.7mm (0.58 in)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S03: HIGHLIGHTS -->
+<section id="highlights" class="py-14 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#0369a1;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 03</p>
+      <h2 class="text-2xl font-bold text-slate-800">Key Marketing Highlights and Core Innovations</h2>
+      <p class="text-slate-500 text-sm mt-1">What Dell says makes the XPS 14 (2026) special</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="card card-hover p-6" style="border-left:4px solid #007db8;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#007db8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">01</span>
+          <h4 class="font-bold text-slate-800 text-sm">Intel Panther Lake — Generational Leap</h4>
+          <span class="badge badge-dell ml-auto">New Platform</span>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">The Intel Core Ultra X7 (Panther Lake) delivers Geekbench 6 multi-core scores of <strong class="text-slate-700">~16,927</strong> — a 50%+ uplift over the previous XPS generation. Reviewers call it "the biggest Intel performance jump in years."</p>
+      </div>
+      <div class="card card-hover p-6" style="border-left:4px solid #007db8;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#007db8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">02</span>
+          <h4 class="font-bold text-slate-800 text-sm">Stunning 2.8K OLED Touchscreen</h4>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">14" 2.8K OLED with <strong class="text-slate-700">100% DCI-P3, 120Hz adaptive refresh, and multi-touch</strong> — among the best displays on any Windows laptop in 2026. Ideal for creative professionals and content consumers alike.</p>
+      </div>
+      <div class="card card-hover p-6" style="border-left:4px solid #007db8;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#007db8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">03</span>
+          <h4 class="font-bold text-slate-800 text-sm">Most Complete Port Selection</h4>
+          <span class="badge badge-dell ml-auto">Best in Class</span>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed"><strong class="text-slate-700">Thunderbolt 4 x2 + USB-A + SD card + HDMI 2.1</strong> — the most port-complete ultrabook in this comparison. No hub required for most professional workflows.</p>
+      </div>
+      <div class="card card-hover p-6" style="border-left:4px solid #38bdf8;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#38bdf8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">04</span>
+          <h4 class="font-bold text-slate-800 text-sm">32 to 64GB RAM — Power User Ready</h4>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">All configurations start with <strong class="text-slate-700">32GB LPDDR5x</strong> — the most RAM of any laptop in this comparison at base. 64GB option available for demanding workloads like video editing and data science.</p>
+      </div>
+      <div class="card card-hover p-6" style="border-left:4px solid #38bdf8;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#38bdf8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">05</span>
+          <h4 class="font-bold text-slate-800 text-sm">Redesigned Premium Build</h4>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">CNC-machined aluminum chassis with a <strong class="text-slate-700">redesigned hinge and cleaner aesthetic</strong>. Reviewers call it "a true return to form" for XPS. Available in Platinum Silver with a glass palm rest.</p>
+      </div>
+      <div class="card card-hover p-6" style="border-left:4px solid #38bdf8;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#38bdf8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">06</span>
+          <h4 class="font-bold text-slate-800 text-sm">Full Windows 11 Ecosystem</h4>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">Broadest software compatibility — runs any <strong class="text-slate-700">x86 application natively</strong>. No ecosystem lock-in. Full enterprise IT management support with Intel vPro option. Compatible with all existing Windows peripherals and enterprise software.</p>
+      </div>
+      <div class="card card-hover p-6 md:col-span-2 lg:col-span-1" style="border-left:4px solid #38bdf8;">
+        <div class="flex items-center gap-3 mb-3">
+          <span style="width:32px;height:32px;border-radius:50%;background:#38bdf8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">07</span>
+          <h4 class="font-bold text-slate-800 text-sm">Windows Hello and AI PC Features</h4>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">IR camera supports <strong class="text-slate-700">Windows Hello face recognition</strong>. Intel AI Boost NPU enables Copilot+ PC features: live captions, image generation, and AI-powered productivity tools built into Windows 11.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S04: REVIEWS -->
+<section id="reviews" class="py-14 px-6 bg-slate-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#0369a1;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 04</p>
+      <h2 class="text-2xl font-bold text-slate-800">Professional Media and Expert Review Summary</h2>
+      <p class="text-slate-500 text-sm mt-1">Sources: Tom's Hardware &nbsp;·&nbsp; TechRadar &nbsp;·&nbsp; HotHardware &nbsp;·&nbsp; Tweaktown &nbsp;·&nbsp; PCMag — February to June 2026</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+      <div class="card p-5 text-center"><div class="text-2xl font-bold mb-1" style="color:#007db8;">6.5</div><div class="score-bar-bg mb-2"><div class="score-bar-fill" style="width:65%"></div></div><div class="text-xs text-slate-500 font-medium">Portability</div></div>
+      <div class="card p-5 text-center"><div class="text-2xl font-bold mb-1" style="color:#007db8;">9.0</div><div class="score-bar-bg mb-2"><div class="score-bar-fill" style="width:90%"></div></div><div class="text-xs text-slate-500 font-medium">Performance</div></div>
+      <div class="card p-5 text-center"><div class="text-2xl font-bold mb-1" style="color:#007db8;">9.0</div><div class="score-bar-bg mb-2"><div class="score-bar-fill" style="width:90%"></div></div><div class="text-xs text-slate-500 font-medium">Display</div></div>
+      <div class="card p-5 text-center"><div class="text-2xl font-bold mb-1" style="color:#007db8;">7.0</div><div class="score-bar-bg mb-2"><div class="score-bar-fill" style="width:70%"></div></div><div class="text-xs text-slate-500 font-medium">Battery</div></div>
+      <div class="card p-5 text-center"><div class="text-2xl font-bold mb-1" style="color:#007db8;">6.5</div><div class="score-bar-bg mb-2"><div class="score-bar-fill" style="width:65%"></div></div><div class="text-xs text-slate-500 font-medium">Value for Money</div></div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="card p-6">
+        <div class="flex items-center gap-2 mb-5">
+          <span style="width:24px;height:24px;border-radius:50%;background:#dcfce7;color:#166534;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">V</span>
+          <h3 class="font-bold text-slate-800">Consensus Strengths (5 Points)</h3>
+        </div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">Stunning OLED Display</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">2.8K 120Hz OLED with 100% DCI-P3 and touch support is among the best displays on any Windows laptop in 2026. Reviewers consistently rate it as "reference quality."</div></div></div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">Top-Tier Performance</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Intel Core Ultra X7 (Panther Lake) delivers Geekbench 6 multi-core scores of ~16,927 — a 50%+ uplift over the previous XPS generation and competitive with Apple M-series chips.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">Port Selection</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Thunderbolt 4 x2 + USB-A + SD card + HDMI 2.1 makes it the most port-complete ultrabook in this comparison. No hub required for typical professional setups.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">Premium Build Quality</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">CNC-machined aluminum chassis with redesigned hinge and cleaner aesthetic. Reviewers call it "a true return to form" for XPS after several disappointing generations.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-pos">+</div><div><div class="font-semibold text-slate-700 text-sm">Windows Compatibility</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Full Windows 11 support with broadest software compatibility — no ecosystem lock-in, runs any x86 application natively, supports enterprise IT management.</div></div></div>
+      </div>
+      <div class="card p-6">
+        <div class="flex items-center gap-2 mb-5">
+          <span style="width:24px;height:24px;border-radius:50%;background:#fee2e2;color:#991b1b;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">X</span>
+          <h3 class="font-bold text-slate-800">Key Weaknesses (5 Points)</h3>
+        </div>
+        <div class="pro-item"><div class="pro-dot-neg">-</div><div><div class="font-semibold text-slate-700 text-sm">Battery Life</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">~12h real-world is the weakest in this comparison. The OLED display and powerful Intel processor drain the battery faster than ARM-based competitors. Not ideal for all-day untethered use.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-neg">-</div><div><div class="font-semibold text-slate-700 text-sm">Weight and Portability</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">At 1.36kg it is the heaviest of the three laptops in this comparison — noticeably heavier than MateBook Pro S (798g) for daily commuting. Not ideal for frequent travelers.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-neg">-</div><div><div class="font-semibold text-slate-700 text-sm">Premium Price</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Starting at $2,069 for the meaningful configuration — $1,370 more than MacBook Neo and significantly above MateBook Pro S. The premium requires justification by workload.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-neg">-</div><div><div class="font-semibold text-slate-700 text-sm">Fan Noise Under Load</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Active cooling means audible fan noise under sustained workloads. Not suitable for silent environments like libraries or quiet meeting rooms when running demanding tasks.</div></div></div>
+        <div class="pro-item"><div class="pro-dot-neg">-</div><div><div class="font-semibold text-slate-700 text-sm">No Privacy Screen</div><div class="text-slate-500 text-xs mt-0.5 leading-relaxed">Unlike MateBook Pro S, no hardware-level privacy screen option is available. Relevant for business users handling sensitive data in public spaces.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S05: USER FEEDBACK -->
+<section id="users" class="py-14 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#0369a1;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 05</p>
+      <h2 class="text-2xl font-bold text-slate-800">End-User Feedback and Sentiment Analysis</h2>
+      <p class="text-slate-500 text-sm mt-1">Aggregated from Reddit r/Dell, Notebookcheck forums, YouTube comments, Amazon reviews — February to June 2026</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <span style="width:28px;height:28px;border-radius:50%;background:#22c55e;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;">+</span>
+          <h3 class="font-bold text-slate-800">Top 5 Positive Feedback</h3>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th style="width:5%">#</th><th style="width:22%">Theme</th><th>Representative Comment</th><th style="width:14%">Frequency</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">1</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Display quality</td>
+                <td class="text-xs italic text-slate-500">"The OLED screen is absolutely stunning. Colors pop, blacks are perfect, and the touch response is flawless. Best laptop display I have ever used."</td>
+                <td><span class="badge badge-green">Very High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">2</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Performance</td>
+                <td class="text-xs italic text-slate-500">"This thing is a beast. Editing 4K footage in Premiere while running Chrome with 30 tabs — zero slowdown. Intel really delivered with Panther Lake."</td>
+                <td><span class="badge badge-green">High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">3</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Port selection</td>
+                <td class="text-xs italic text-slate-500">"Finally a premium laptop where I do not need to carry a hub. Thunderbolt 4, HDMI, SD card, USB-A — everything I need is right there."</td>
+                <td><span class="badge badge-green">High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">4</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Build quality</td>
+                <td class="text-xs italic text-slate-500">"XPS is back. This feels like the XPS 13 from 2016 that everyone loved — solid, premium, no compromises. Dell really listened to the community."</td>
+                <td><span class="badge badge-yellow">Med-High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">5</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Windows compatibility</td>
+                <td class="text-xs italic text-slate-500">"All my work software runs perfectly. AutoCAD, Revit, specialized engineering tools — everything just works. No compatibility worries."</td>
+                <td><span class="badge badge-yellow">Medium</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <span style="width:28px;height:28px;border-radius:50%;background:#ef4444;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;">-</span>
+          <h3 class="font-bold text-slate-800">Top 5 Negative Feedback</h3>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th style="width:5%">#</th><th style="width:22%">Theme</th><th>Representative Comment</th><th style="width:14%">Impact</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">1</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Battery life</td>
+                <td class="text-xs italic text-slate-500">"The battery is the main disappointment. I get about 6 to 8 hours of real use. For a $2,000 laptop in 2026, that is not acceptable."</td>
+                <td><span class="badge badge-red">High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">2</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Price</td>
+                <td class="text-xs italic text-slate-500">"$2,069 is a lot to ask. You could get a MacBook Air M5 and a separate iPad for this price. The performance is great but the value is hard to justify."</td>
+                <td><span class="badge badge-red">High</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">3</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Fan noise</td>
+                <td class="text-xs italic text-slate-500">"The fans spin up aggressively when doing anything intensive. In a quiet room it is quite noticeable. Not ideal for library or open-office use."</td>
+                <td><span class="badge badge-yellow">Medium</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">4</span></td>
+                <td class="font-semibold text-slate-700 text-xs">Weight for travel</td>
+                <td class="text-xs italic text-slate-500">"1.36kg is fine for desk use but I travel constantly. Compared to the MateBook Pro S, this feels heavy after a long day of commuting."</td>
+                <td><span class="badge badge-yellow">Medium</span></td>
+              </tr>
+              <tr>
+                <td><span style="width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">5</span></td>
+                <td class="font-semibold text-slate-700 text-xs">OLED burn-in concern</td>
+                <td class="text-xs italic text-slate-500">"Worried about long-term OLED burn-in with static taskbar elements. Dell's warranty coverage on display defects is also unclear."</td>
+                <td><span class="badge badge-yellow">Medium</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S06: GUIDANCE -->
+<section id="guidance" class="py-14 px-6 bg-slate-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#0369a1;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 06</p>
+      <h2 class="text-2xl font-bold text-slate-800">Target Audience and Purchase Guidance</h2>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="card p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <span style="width:32px;height:32px;border-radius:50%;background:#dcfce7;color:#166534;display:flex;align-items:center;justify-content:center;font-size:16px;">V</span>
+          <h3 class="font-bold text-slate-800">Strongly Recommended</h3>
+        </div>
+        <div class="table-wrap mb-4">
+          <table class="data-table">
+            <thead><tr><th>Target User</th><th>Primary Use Case</th><th>Rationale</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold text-slate-700 text-xs">Power Windows users</td><td class="text-xs text-slate-500">Development, data science, heavy multitasking</td><td class="text-xs text-slate-500">Top-tier CPU + 32 to 64GB RAM + Thunderbolt 4</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Creative professionals</td><td class="text-xs text-slate-500">4K video editing, 3D design, photo work</td><td class="text-xs text-slate-500">2.8K OLED 100% P3 + Intel Arc GPU</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Multi-peripheral users</td><td class="text-xs text-slate-500">Docking, external monitors, peripherals</td><td class="text-xs text-slate-500">Most ports of any laptop in this comparison</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Enterprise / IT-managed</td><td class="text-xs text-slate-500">Corporate IT, Windows domain, legacy software</td><td class="text-xs text-slate-500">Full Windows 11 Pro + Intel vPro support</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Desk-based professionals</td><td class="text-xs text-slate-500">Fixed workstation with occasional travel</td><td class="text-xs text-slate-500">Performance justifies weight for non-daily travelers</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="verdict-rec p-4 text-sm"><span class="font-bold text-green-800">Editorial Verdict:</span> <span class="text-green-700">Best Windows ultrabook for power users who need performance, display quality, and port flexibility — and do not mind paying a premium or carrying extra weight.</span></div>
+      </div>
+      <div class="card p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <span style="width:32px;height:32px;border-radius:50%;background:#ffedd5;color:#9a3412;display:flex;align-items:center;justify-content:center;font-size:16px;">!</span>
+          <h3 class="font-bold text-slate-800">Proceed with Caution</h3>
+        </div>
+        <div class="table-wrap mb-4">
+          <table class="data-table">
+            <thead><tr><th>User Profile</th><th>Risk Scenario</th><th>Alternative</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold text-slate-700 text-xs">Frequent travelers</td><td class="text-xs text-slate-500">1.36kg + ~12h battery is a burden on the road</td><td class="text-xs text-slate-500">HUAWEI MateBook Pro S (798g, 18h)</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Budget-conscious buyers</td><td class="text-xs text-slate-500">$2,069+ is a steep ask for most users</td><td class="text-xs text-slate-500">MacBook Neo ($699) or MateBook Pro S</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Apple ecosystem users</td><td class="text-xs text-slate-500">iPhone / iPad workflow disrupted on Windows</td><td class="text-xs text-slate-500">MacBook Neo or MacBook Air M5</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Privacy-focused users</td><td class="text-xs text-slate-500">No hardware privacy screen available</td><td class="text-xs text-slate-500">HUAWEI MateBook Pro S (Lingdun Privacy)</td></tr>
+              <tr><td class="font-semibold text-slate-700 text-xs">Silent-environment users</td><td class="text-xs text-slate-500">Fan noise in libraries or quiet offices</td><td class="text-xs text-slate-500">MacBook Neo (fanless A18 Pro)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="verdict-cau p-4 text-sm"><span class="font-bold text-orange-800">Key Limitation:</span> <span class="text-orange-700">The XPS 14 2026 is a powerful machine but its battery life (~12h) and weight (1.36kg) make it less suitable for all-day mobile use compared to ARM-based competitors. Justify the $2,069+ price by workload requirements.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S07: COMPARISON -->
+<section id="comparison" class="py-14 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="section-header mb-8">
+      <p style="color:#0369a1;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Section 07</p>
+      <h2 class="text-2xl font-bold text-slate-800">Competitive Landscape Analysis</h2>
+      <p class="text-slate-500 text-sm mt-1">Dell XPS 14 (2026) vs. HUAWEI MateBook Pro S vs. Apple MacBook Neo</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div class="lg:col-span-1 card p-6 flex flex-col items-center">
+        <h3 class="text-sm font-bold text-slate-600 uppercase tracking-wide mb-4">Capability Radar</h3>
+        <canvas id="radarChart" width="300" height="300"></canvas>
+      </div>
+      <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-5 rounded-xl" style="background:#e0f2fe;border-left:4px solid #007db8;">
+          <div class="font-bold text-blue-900 text-sm mb-2">Dell XPS 14 (2026)</div>
+          <div class="text-blue-700 text-xs leading-relaxed">Top CPU performance<br/>2.8K OLED 120Hz touch<br/>Most ports (TB4 + HDMI + SD)<br/>32 to 64GB RAM options<br/>Heaviest at 1.36kg<br/>Shortest battery (~12h)</div>
+        </div>
+        <div class="p-5 rounded-xl" style="background:#e8f0fb;border-left:4px solid #1b3a6b;">
+          <div class="font-bold text-blue-900 text-sm mb-2">HUAWEI MateBook Pro S</div>
+          <div class="text-blue-700 text-xs leading-relaxed">Lightest 14" at 798g<br/>Best OLED display (3.1K 120Hz)<br/>18h battery life<br/>Hardware privacy screen<br/>HarmonyOS ecosystem<br/>From CNY 7,999</div>
+        </div>
+        <div class="p-5 rounded-xl" style="background:#f5f5f5;border-left:4px solid #1a1a1a;">
+          <div class="font-bold text-gray-900 text-sm mb-2">Apple MacBook Neo</div>
+          <div class="text-gray-600 text-xs leading-relaxed">Best value at $699<br/>A18 Pro chip performance<br/>16h battery life<br/>Full Apple ecosystem<br/>Limited to 8GB RAM<br/>60Hz LCD (no OLED)</div>
+        </div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:16%">Dimension</th>
+            <th class="our-col" style="width:28%">Dell XPS 14 (2026)</th>
+            <th style="width:28%">HUAWEI MateBook Pro S</th>
+            <th style="width:28%">Apple MacBook Neo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="row-label">Starting Price</td><td class="our-col text-red-600">$2,069 — Highest</td><td>CNY 7,999 (~$1,099)</td><td class="font-bold" style="color:#166534;">$699 — Lowest</td></tr>
+          <tr><td class="row-label">Weight</td><td class="our-col text-red-600">1.36kg — Heaviest</td><td class="font-bold" style="color:#1b3a6b;">798g — Lightest</td><td>1.23kg</td></tr>
+          <tr><td class="row-label">Processor</td><td class="our-col font-bold" style="color:#007db8;">Intel Core Ultra X7 — Fastest</td><td>Kirin XE90 (20W)</td><td>Apple A18 Pro</td></tr>
+          <tr><td class="row-label">Display</td><td class="our-col">14" OLED 2.8K 120Hz Touch</td><td class="font-bold" style="color:#1b3a6b;">14.2" OLED 3.1K 120Hz — Best</td><td class="text-red-600">13" LCD 60Hz sRGB</td></tr>
+          <tr><td class="row-label">Battery Life</td><td class="our-col text-red-600">~12h — Shortest</td><td class="font-bold" style="color:#1b3a6b;">18h rated — Longest</td><td>16h rated / 10–13h real</td></tr>
+          <tr><td class="row-label">RAM</td><td class="our-col font-bold" style="color:#007db8;">32–64GB — Most</td><td>16–32GB</td><td class="text-red-600">8GB only — No upgrade</td></tr>
+          <tr><td class="row-label">Ports</td><td class="our-col font-bold" style="color:#007db8;">TB4x2 + USB-A + SD + HDMI</td><td class="text-red-600">2x USB-C</td><td class="text-red-600">2x USB-C (1x USB 2 only)</td></tr>
+          <tr><td class="row-label">OS</td><td class="our-col font-bold" style="color:#007db8;">Windows 11 — Widest compat.</td><td>HarmonyOS 6.1</td><td>macOS 27</td></tr>
+          <tr><td class="row-label">Privacy Screen</td><td class="our-col text-red-600">None</td><td class="font-bold" style="color:#1b3a6b;">Hardware Lingdun (opt.) — Unique</td><td class="text-red-600">None</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-slate-900 text-slate-400 py-10 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex justify-center gap-6 flex-wrap mb-6">
+      <a href="index.html" class="text-sm hover:text-white transition-colors">Back to Hub</a>
+      <a href="matebook-pro-s.html" class="text-sm hover:text-white transition-colors">MateBook Pro S</a>
+      <a href="macbook-neo.html" class="text-sm hover:text-white transition-colors">MacBook Neo</a>
+      <a href="dell-xps-14.html" class="text-sm hover:text-white transition-colors">Dell XPS 14</a>
+    </div>
+    <p class="text-center text-xs">Sources: Dell.com &nbsp;·&nbsp; Tom's Hardware &nbsp;·&nbsp; TechRadar &nbsp;·&nbsp; HotHardware &nbsp;·&nbsp; Tweaktown &nbsp;·&nbsp; PCMag &nbsp;·&nbsp; September 2026 &nbsp;·&nbsp; For reference only</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('navContainer').innerHTML = renderNav('dell-xps-14');
+function switchImg(t, s) {
+  document.getElementById('galleryMain').src = s;
+  document.querySelectorAll('.gallery-thumb').forEach(function(x) { x.classList.remove('active'); });
+  t.classList.add('active');
+}
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var target = document.querySelector(a.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' });
+  });
+});
+var sections = document.querySelectorAll('section[id]');
+var navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+function updateActiveNav() {
+  var current = '';
+  sections.forEach(function(sec) { if (sec.getBoundingClientRect().top <= 70) current = sec.getAttribute('id'); });
+  navLinks.forEach(function(link) { link.classList.toggle('active', link.getAttribute('href') === '#' + current); });
+}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+var ctx = document.getElementById('radarChart').getContext('2d');
+new Chart(ctx, {
+  type: 'radar',
+  data: {
+    labels: ['Portability', 'Performance', 'Display', 'Battery', 'Ecosystem', 'Value'],
+    datasets: [
+      { label: 'Dell XPS 14', data: [6.5, 9.0, 9.0, 7.0, 8.5, 6.5], borderColor: '#007db8', backgroundColor: 'rgba(0,125,184,0.15)', borderWidth: 2.5, pointBackgroundColor: '#007db8', pointRadius: 4 },
+      { label: 'MateBook Pro S', data: [9.5, 7.5, 9.5, 8.5, 9.0, 7.0], borderColor: '#1b3a6b', backgroundColor: 'rgba(27,58,107,0.1)', borderWidth: 2, pointBackgroundColor: '#1b3a6b', pointRadius: 4 },
+      { label: 'MacBook Neo', data: [7.5, 8.0, 7.5, 8.0, 9.0, 9.5], borderColor: '#1a1a1a', backgroundColor: 'rgba(26,26,26,0.08)', borderWidth: 2, pointBackgroundColor: '#1a1a1a', pointRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 12, padding: 8 } } },
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, font: { size: 9 }, color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.2)' }, pointLabels: { font: { size: 10, weight: '600' }, color: '#475569' } } }
+  }
+});
+</script>
+</body>
+</html>
