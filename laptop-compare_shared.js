@@ -101,7 +101,7 @@ function renderNav(currentId) {
       </a>
 
       <!-- Weekly Brief link -->
-      <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0;margin-right:8px;padding:6px 14px;border-radius:8px;background:${currentId === 'weekly-brief' ? 'rgba(255,255,255,0.12)' : 'transparent'};transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='${currentId === 'index' ? 'rgba(255,255,255,0.12)' : 'transparent'}'">
+      <a href="weekly-brief.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0;margin-right:8px;padding:6px 14px;border-radius:8px;background:${currentId === 'weekly-brief' ? 'rgba(255,255,255,0.12)' : 'transparent'};transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='${currentId === 'index' ? 'rgba(255,255,255,0.12)' : 'transparent'}'">
         <svg viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px;color:#4a9edd;flex-shrink:0;"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
         <span style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;">Latest Focus</span>
       </a>
