@@ -129,10 +129,11 @@ function renderNav(currentId) {
         <a href="#specs"       class="nav-link" style="font-size:11px;color:#64748b;text-decoration:none;padding:4px 8px;border-radius:5px;transition:all 0.15s;" onmouseover="this.style.color='#fff';this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.color='#64748b';this.style.background='transparent'">Specs</a>
         <a href="#reviews"     class="nav-link" style="font-size:11px;color:#64748b;text-decoration:none;padding:4px 8px;border-radius:5px;transition:all 0.15s;" onmouseover="this.style.color='#fff';this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.color='#64748b';this.style.background='transparent'">Review</a>
         <a href="#comparison"  class="nav-link" style="font-size:11px;color:#64748b;text-decoration:none;padding:4px 8px;border-radius:5px;transition:all 0.15s;" onmouseover="this.style.color='#fff';this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.color='#64748b';this.style.background='transparent'">Compare</a>
-        <div style="margin-left:8px;display:flex;border-radius:5px;overflow:hidden;border:1px solid rgba(255,255,255,0.2);">
+      <!--  <div style="margin-left:8px;display:flex;border-radius:5px;overflow:hidden;border:1px solid rgba(255,255,255,0.2);">
           <button id="nav-lt-en" onclick="setLang('en')" style="padding:3px 10px;font-size:11px;font-weight:700;border:none;cursor:pointer;background:#1b3a6b;color:#fff;letter-spacing:.3px;">EN</button>
           <button id="nav-lt-cn" onclick="setLang('cn')" style="padding:3px 10px;font-size:11px;font-weight:700;border:none;cursor:pointer;background:transparent;color:rgba(255,255,255,0.55);letter-spacing:.3px;">中文</button>
         </div>
+        -->
       </div>` : ''}
     </div>
   </nav>`;
