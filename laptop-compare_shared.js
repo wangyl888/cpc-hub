@@ -101,9 +101,9 @@ function renderNav(currentId) {
       </a>
 
       <!-- Weekly Brief link -->
-      <a href="weekly-brief.html" style="display:flex;align-items:center;gap:6px;text-decoration:none;flex-shrink:0;margin-right:16px;padding:6px 12px;border-radius:8px;background:${currentId === 'weekly-brief' ? 'rgba(255,255,255,0.12)' : 'transparent'};border:1px solid ${currentId === 'weekly-brief' ? 'rgba(74,158,221,0.5)' : 'rgba(255,255,255,0.1)'};transition:all 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.1)';this.style.borderColor='rgba(74,158,221,0.4)'" onmouseout="this.style.background='${currentId === 'weekly-brief' ? 'rgba(255,255,255,0.12)' : 'transparent'}';this.style.borderColor='${currentId === 'weekly-brief' ? 'rgba(74,158,221,0.5)' : 'rgba(255,255,255,0.1)'}'">
-        <svg viewBox="0 0 20 20" fill="currentColor" style="width:14px;height:14px;color:#f59e0b;flex-shrink:0;"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
-        <span style="font-size:12px;font-weight:700;color:${currentId === 'weekly-brief' ? '#fff' : '#f59e0b'};white-space:nowrap;">Latest Focus</span>
+      <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0;margin-right:8px;padding:6px 14px;border-radius:8px;background:${currentId === 'weekly-brief' ? 'rgba(255,255,255,0.12)' : 'transparent'};transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='${currentId === 'index' ? 'rgba(255,255,255,0.12)' : 'transparent'}'">
+        <svg viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px;color:#4a9edd;flex-shrink:0;"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        <span style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;">Latest Focusl</span>
       </a>
 
       <!-- Divider -->
