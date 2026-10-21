@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NVIDIA RTX Spark — 平台深度分析</title>
+<script src="https://resource.bantouyan.com/js/tailwind@3.4.16.js"></script>
+<script src="laptop-compare_shared.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:#f0f4f8;color:#1e293b}
+  .hero{background:linear-gradient(135deg,#0a0a0a 0%,#1a1a2e 40%,#16213e 70%,#0f3460 100%);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(118,185,0,0.12) 0%,transparent 70%)}
+  .ng{color:#76b900}
+  .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:4px;font-size:11px;font-weight:700}
+  .bg{background:#dcfce7;color:#166534}.bb{background:#dbeafe;color:#1e40af}.br{background:#fee2e2;color:#991b1b}
+  .by{background:#fef9c3;color:#854d0e}.bp{background:#ede9fe;color:#6d28d9}
+  .bn{background:rgba(118,185,0,0.15);color:#76b900;border:1px solid rgba(118,185,0,0.3)}
+  .card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.06);overflow:hidden}
+  .sl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#76b900}
+  .sb{background:#e2e8f0;border-radius:99px;height:7px;overflow:hidden}
+  .sf{height:100%;border-radius:99px}
+  /* data row */
+  .dr{display:flex;align-items:baseline;gap:5px;padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:12.5px}
+  .dr:last-child{border-bottom:none}
+  .dk{color:#64748b;flex-shrink:0;min-width:128px}
+  .dv{font-weight:700;color:#0f172a;flex:1}
+  .dg{color:#16a34a!important}.dw{color:#ea580c!important}
+  .src{font-size:10px;color:#94a3b8;flex-shrink:0}
+  .src a{color:#3b82f6;text-decoration:none}.src a:hover{text-decoration:underline}
+  /* timeline */
+  .ti{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #f1f5f9}
+  .ti:last-child{border-bottom:none}
+  .td{width:108px;flex-shrink:0;font-size:11px;color:#64748b;padding-top:3px}
+  .tt{font-size:13px;font-weight:700;color:#0f172a;margin-bottom:2px}
+  .tx{font-size:12px;color:#475569;line-height:1.5}
+  .ts{font-size:10px;color:#94a3b8;margin-top:3px}
+  .ts a{color:#3b82f6;text-decoration:none}.ts a:hover{text-decoration:underline}
+  /* product card */
+  .pc{background:#fff;border-radius:12px;border:1px solid #e2e8f0;overflow:hidden;transition:box-shadow .2s,transform .2s}
+  .pc:hover{box-shadow:0 6px 24px rgba(0,0,0,.09);transform:translateY(-2px)}
+  /* review */
+  .rv{background:#fff;border-radius:12px;border:1px solid #e2e8f0;padding:14px}
+  .rs{font-size:10px;color:#94a3b8;margin-top:6px}
+  .rs a{color:#3b82f6;text-decoration:none}.rs a:hover{text-decoration:underline}
+  .vg{background:#f0fdf4;border-left:3px solid #22c55e;border-radius:0 6px 6px 0;padding:7px 11px;font-size:12px;color:#166534;margin-top:8px}
+  .vw{background:#fff7ed;border-left:3px solid #f97316;border-radius:0 6px 6px 0;padding:7px 11px;font-size:12px;color:#9a3412;margin-top:8px}
+  table{width:100%;border-collapse:collapse}
+  thead th{background:#0f172a;color:#fff;padding:10px 12px;text-align:left;font-size:11.5px;font-weight:700}
+  tbody tr{border-bottom:1px solid #e8f0f8}
+  tbody tr:hover{background:#f7fafd}
+  tbody td{padding:9px 12px;font-size:12.5px;vertical-align:top}
+  .hl{background:#f0fdf4;font-weight:700;color:#166534}
+  .star{color:#f59e0b;font-size:13px}
+</style>
+</head>
+<body>
+<div id="navContainer"></div>
+<script>if(typeof renderNav==='function'){document.getElementById('navContainer').innerHTML=renderNav('rtx-spark-cn');}</script>
+
+<section class="hero py-14 px-6">
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <div class="mb-3 flex items-center gap-2 flex-wrap">
+          <span class="badge bn">平台深度分析 · 2026年Q4</span>
+          <span class="badge" style="background:rgba(255,255,255,.1);color:#94a3b8;">2026年10月21日</span>
+        </div>
+        <h1 class="text-5xl font-black text-white leading-tight mb-3">NVIDIA<br/><span class="ng">RTX Spark</span></h1>
+        <p class="text-slate-300 text-base mb-5 leading-relaxed">将 Blackwell RTX GPU、Grace CPU 与最高 128GB 统一内存整合于单一超级芯片，专为个人 AI 智能体时代重新定义 Windows PC。</p>
+        <div class="flex gap-3 flex-wrap">
+          <a href="#specs" class="px-5 py-2.5 rounded-xl font-bold text-sm" style="background:#76b900;color:#000;">芯片规格 →</a>
+          <a href="#products" class="px-5 py-2.5 rounded-xl font-bold text-sm" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);">产品与定价</a>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="rounded-2xl p-4 text-center" style="background:rgba(118,185,0,0.12);border:1px solid rgba(118,185,0,0.25);">
+          <div class="text-3xl font-black text-white mb-1">1 PF</div>
+          <div class="text-xs font-semibold ng">FP4 AI 算力</div>
+          <div class="text-xs text-slate-400 mt-0.5"><a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank" class="hover:underline">NVIDIA 官方规格</a></div>
+        </div>
+        <div class="rounded-2xl p-4 text-center" style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);">
+          <div class="text-3xl font-black text-white mb-1">128<span class="text-xl">GB</span></div>
+          <div class="text-xs font-semibold text-blue-400">统一内存上限</div>
+          <div class="text-xs text-slate-400 mt-0.5"><a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank" class="hover:underline">LPDDR5X @ 300 GB/s</a></div>
+        </div>
+        <div class="rounded-2xl p-4 text-center" style="background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);">
+          <div class="text-3xl font-black text-white mb-1">6144</div>
+          <div class="text-xs font-semibold text-purple-400">CUDA 核心（N1X）</div>
+          <div class="text-xs text-slate-400 mt-0.5"><a href="https://www.techpowerup.com/gpu-specs/rtx-spark-n1x-6144-core.c4410" target="_blank" class="hover:underline">TechPowerUp</a></div>
+        </div>
+        <div class="rounded-2xl p-4 text-center" style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.25);">
+          <div class="text-3xl font-black text-white mb-1">$2,599</div>
+          <div class="text-xs font-semibold text-yellow-400">全球起售价</div>
+          <div class="text-xs text-slate-400 mt-0.5"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank" class="hover:underline">NVIDIA 发布公告</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="max-w-7xl mx-auto px-6 py-10">
+
+
+<!-- 什么是 RTX Spark -->
+<section id="overview" class="mb-12">
+  <div class="mb-4"><p class="sl mb-1">Section 00</p><h2 class="text-xl font-bold text-slate-800">什么是 RTX Spark？</h2></div>
+  <div class="card p-5">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+      <div class="lg:col-span-2 flex flex-col gap-3">
+        <p class="text-sm text-slate-600 leading-relaxed">
+          NVIDIA RTX Spark 是一款<strong>超级芯片（SoC）平台</strong>——将 Blackwell RTX GPU 与 Grace CPU（与联发科联合设计）通过 NVLink-C2C 互联集成在单一芯片中，共享 LPDDR5X 统一内存池。这是 NVIDIA 首款面向消费级 Windows on Arm 的计算平台。
+          <a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank" class="text-blue-500 hover:underline text-xs ml-1">NVIDIA 公告</a>
+        </p>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          统一内存架构让 CPU 和 GPU 同时访问同一块物理内存，无需数据搬运开销，支持超大 AI 模型（最高 1200 亿参数）与 GPU 密集型工作负载同时运行。
+          <a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank" class="text-blue-500 hover:underline text-xs ml-1">官方规格</a>
+        </p>
+        <div class="grid grid-cols-2 gap-2 mt-1">
+          <div class="dr"><span class="dk">芯片类型</span><span class="dv">SoC 超级芯片</span></div>
+          <div class="dr"><span class="dk">CPU 架构</span><span class="dv">Grace（Arm，联发科联合设计）</span></div>
+          <div class="dr"><span class="dk">GPU 架构</span><span class="dv">Blackwell RTX</span></div>
+          <div class="dr"><span class="dk">互联方式</span><span class="dv">NVLink-C2C</span></div>
+          <div class="dr"><span class="dk">内存类型</span><span class="dv">LPDDR5X 统一内存</span></div>
+          <div class="dr"><span class="dk">最大内存</span><span class="dv">128 GB</span></div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl p-4" style="background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;">
+          <p class="text-xs font-bold mb-3" style="color:#76b900;letter-spacing:1px;text-transform:uppercase;">平台三大核心优势</p>
+          <div class="flex flex-col gap-2.5">
+            <div class="flex items-start gap-2">
+              <span class="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-black" style="background:#76b900;color:#000;">1</span>
+              <div>
+                <p class="text-xs font-bold text-white">统一内存，零搬运</p>
+                <p class="text-xs text-slate-400 mt-0.5">CPU / GPU 共享同一物理内存池，消除 PCIe 传输瓶颈</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-black" style="background:#76b900;color:#000;">2</span>
+              <div>
+                <p class="text-xs font-bold text-white">本地 AI 推理</p>
+                <p class="text-xs text-slate-400 mt-0.5">支持最高 1200 亿参数模型离线运行，无需云端</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-black" style="background:#76b900;color:#000;">3</span>
+              <div>
+                <p class="text-xs font-bold text-white">Windows on Arm 原生</p>
+                <p class="text-xs text-slate-400 mt-0.5">NVIDIA 首次进入消费级 WoA 生态，深度整合微软平台</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl p-3" style="background:#f0fdf4;border:1px solid #bbf7d0;">
+          <p class="text-xs font-bold text-green-800 mb-1">发布时间</p>
+          <p class="text-xs text-green-700">2026年5月 GTC 台北发布<br/>2026年10月正式开售</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 时间线 -->
+<section id="timeline" class="mb-12">
+  <div class="mb-4"><p class="sl mb-1">Section 01</p><h2 class="text-xl font-bold text-slate-800">发展时间线</h2></div>
+  <div class="card p-5">
+    <div class="ti">
+      <div style="width:10px;height:10px;border-radius:50%;background:#76b900;flex-shrink:0;margin-top:5px"></div>
+      <div class="td">2026年5月31日</div>
+      <div>
+        <div class="tt">GTC 台北 — RTX Spark 正式发布 <span class="badge bn ml-1">首次公布</span></div>
+        <div class="tx">黄仁勋发布 RTX Spark 超级芯片；合作伙伴：华硕、戴尔、惠普、联想、微软 Surface、微星；联发科参与 Grace CPU 设计；发布 DLSS 4.5、Adobe 合作及 OpenShell 安全运行时。</div>
+        <div class="ts"><a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank">NVIDIA 新闻室 — GTC 台北公告</a></div>
+      </div>
+    </div>
+    <div class="ti">
+      <div style="width:10px;height:10px;border-radius:50%;background:#3b82f6;flex-shrink:0;margin-top:5px"></div>
+      <div class="td">2026年6月2–3日</div>
+      <div>
+        <div class="tt">微软 Build 大会 — Windows 智能体平台详解</div>
+        <div class="tx">公布 Windows 安全容器原语、NVIDIA OpenShell 运行时；首发 Windows on Arm 的 PyTorch-CUDA 构建版、原生 Python 和 Conda 安装程序。</div>
+        <div class="ts"><a href="https://blogs.windows.com/windowsexperience/?p=180355" target="_blank">Windows 官方博客 — Build 2026</a></div>
+      </div>
+    </div>
+    <div class="ti">
+      <div style="width:10px;height:10px;border-radius:50%;background:#8b5cf6;flex-shrink:0;margin-top:5px"></div>
+      <div class="td">2026年9月4日</div>
+      <div>
+        <div class="tt">IFA 柏林 — 首次上手体验</div>
+        <div class="tx">How-To Geek、The Verge 等媒体上手华硕、戴尔、微软实机；展示 128GB 满配版本；AI 性能获好评，游戏和应用兼容性有所保留。</div>
+        <div class="ts"><a href="https://www.howtogeek.com/rtx-spark-hands-on-asus-dell-microsoft/" target="_blank">How-To Geek — IFA 2026 上手体验</a></div>
+      </div>
+    </div>
+    <div class="ti">
+      <div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;flex-shrink:0;margin-top:5px"></div>
+      <div class="td">2026年10月7日</div>
+      <div>
+        <div class="tt">微软 Surface 发布会 — 预购开启 <span class="badge by ml-1">定价公布</span></div>
+        <div class="tx">Surface Laptop Ultra 发布（$3,299 起）；华硕 ProArt P16/P14 定价（$2,599–$6,999）；戴尔 XPS 16 创意版 $3,799；微星 Prestige N16 和惠普 OmniBook Ultra 同步发布。</div>
+        <div class="ts"><a href="https://www.pcmag.com/opinions/rtx-spark-and-builder-pcs-microsoft-nvidia-oct-7-surface-event-explained" target="_blank">PCMag — 发布会解读</a> · <a href="https://www.redsharknews.com/asus-proart-p16-p14-rtx-spark-price-availability" target="_blank">RedShark — 华硕定价</a></div>
+      </div>
+    </div>
+    <div class="ti" style="border-bottom:none">
+      <div style="width:12px;height:12px;border-radius:50%;background:#dc2626;flex-shrink:0;margin-top:4px"></div>
+      <div class="td">2026年10月16日</div>
+      <div>
+        <div class="tt">全球正式发售 <span class="badge br ml-1">现已上市</span></div>
+        <div class="tx">华硕、戴尔、惠普、联想、微软、微星全球同步开售，起售价 $2,599；首批评测上线；DLSS 5 三维引导神经渲染随《NBA 2K27》同步上线；Nemotron 3.5 Bolt 74B-A9B 优化模型发布。</div>
+        <div class="ts"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank">NVIDIA 发布公告 — 全球上市</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 芯片规格 -->
+<section id="specs" class="mb-12">
+  <div class="mb-4"><p class="sl mb-1">Section 02</p><h2 class="text-xl font-bold text-slate-800">超级芯片规格</h2></div>
+  <div class="card mb-4 overflow-hidden">
+    <div style="background:#0f172a;padding:10px 14px;"><h3 class="font-bold text-white text-sm">N1X 版本对比 · <a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank" class="text-green-400 hover:underline text-xs ml-1">来源：NVIDIA 官方规格页</a></h3></div>
+    <div class="overflow-x-auto">
+      <table>
+        <thead><tr><th style="width:18%">规格</th><th style="background:#1b3a6b">N1X 笔记本（满配）</th><th>N1X 笔记本（基础版）</th><th style="background:#1b3a6b">N1X 桌面版</th></tr></thead>
+        <tbody>
+          <tr><td class="font-semibold text-slate-600">GPU</td><td class="hl">6,144 核 Blackwell RTX</td><td>5,120 核 Blackwell RTX</td><td class="hl">6,144 核 Blackwell RTX</td></tr>
+          <tr><td class="font-semibold text-slate-600">CPU</td><td class="hl">20 核 NVIDIA Grace（Arm）</td><td>18 核 NVIDIA Grace（Arm）</td><td class="hl">20 核 NVIDIA Grace（Arm）</td></tr>
+          <tr><td class="font-semibold text-slate-600">NPU</td><td>NVIDIA NPU</td><td>NVIDIA NPU</td><td>—</td></tr>
+          <tr><td class="font-semibold text-slate-600">TDP</td><td>45–80W</td><td>45–80W</td><td>140W</td></tr>
+          <tr><td class="font-semibold text-slate-600">AI 算力（FP4）</td><td class="hl">1 Petaflop</td><td>827 Teraflops</td><td class="hl">1 Petaflop</td></tr>
+          <tr><td class="font-semibold text-slate-600">最大内存</td><td class="hl">128 GB LPDDR5X</td><td>32 GB LPDDR5X</td><td class="hl">128 GB LPDDR5X</td></tr>
+          <tr><td class="font-semibold text-slate-600">内存带宽</td><td class="hl">300 GB/s</td><td>~200 GB/s</td><td class="hl">300 GB/s</td></tr>
+          <tr><td class="font-semibold text-slate-600">制程</td><td colspan="3" style="text-align:center;color:#475569">3nm（台积电 N3）</td></tr>
+          <tr><td class="font-semibold text-slate-600">Tensor 核心</td><td colspan="3" style="text-align:center;color:#475569">第五代（FP4 / FP8 / BF16）</td></tr>
+          <tr><td class="font-semibold text-slate-600">光追核心</td><td colspan="3" style="text-align:center;color:#475569">第四代</td></tr>
+          <tr><td class="font-semibold text-slate-600">DLSS</td><td colspan="3" style="text-align:center;color:#475569">DLSS 5（三维引导神经渲染 + 动态多帧生成）</td></tr>
+          <tr><td class="font-semibold text-slate-600">CUDA 能力</td><td colspan="3" style="text-align:center;color:#475569">12.1</td></tr>
+          <tr><td class="font-semibold text-slate-600">视频编解码</td><td colspan="3" style="text-align:center;color:#475569">第九代 NVENC / 第六代 NVDEC</td></tr>
+          <tr><td class="font-semibold text-slate-600">操作系统</td><td colspan="3" style="text-align:center;color:#475569">Windows 11（Arm 原生）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="card p-4">
+      <h3 class="font-bold text-slate-800 text-sm mb-3">⚡ 统一内存架构</h3>
+      <ul class="space-y-0">
+        <li class="dr"><span class="dk">内存架构</span><span class="dv dg">CPU+GPU 共享同一物理内存</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank">NVIDIA</a></span></li>
+        <li class="dr"><span class="dk">互联带宽</span><span class="dv dg">NVLink-C2C 900 GB/s 双向</span><span class="src"><a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank">官方</a></span></li>
+        <li class="dr"><span class="dk">最大内存</span><span class="dv dg">128GB（与 M5 Max 持平）</span><span class="src"><a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank">官方</a></span></li>
+        <li class="dr"><span class="dk">可运行场景</span><span class="dv">90GB+ 3D 场景 + LLM 同时</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank">NVIDIA</a></span></li>
+      </ul>
+    </div>
+    <div class="card p-4">
+      <h3 class="font-bold text-slate-800 text-sm mb-3">🤖 AI 智能体平台</h3>
+      <ul class="space-y-0">
+        <li class="dr"><span class="dk">AI 算力</span><span class="dv dg">1 Petaflop FP4</span><span class="src"><a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank">官方</a></span></li>
+        <li class="dr"><span class="dk">最大参数量</span><span class="dv dg">本地运行 1200 亿参数 LLM</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank">NVIDIA</a></span></li>
+        <li class="dr"><span class="dk">安全运行时</span><span class="dv">NVIDIA OpenShell</span><span class="src"><a href="https://build.nvidia.com/openshell" target="_blank">NVIDIA Build</a></span></li>
+        <li class="dr"><span class="dk">首发智能体</span><span class="dv">Hermes、OpenClaw、GitHub Copilot</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank">NVIDIA</a></span></li>
+        <li class="dr"><span class="dk">优化模型</span><span class="dv">Nemotron 3.5 Bolt 74B-A9B</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank">NVIDIA</a></span></li>
+      </ul>
+    </div>
+    <div class="card p-4">
+      <h3 class="font-bold text-slate-800 text-sm mb-3">🎮 RTX 游戏技术栈</h3>
+      <ul class="space-y-0">
+        <li class="dr"><span class="dk">DLSS 版本</span><span class="dv dg">DLSS 5 + 三维引导神经渲染</span><span class="src"><a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank">官方</a></span></li>
+        <li class="dr"><span class="dk">帧生成</span><span class="dv dg">动态多帧生成</span><span class="src"><a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank">官方</a></span></li>
+        <li class="dr"><span class="dk">游戏 FPS 声称</span><span class="dv">1440p 超 100 fps（AAA）</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank">NVIDIA</a></span></li>
+        <li class="dr"><span class="dk">Arm 游戏限制</span><span class="dv dw">部分游戏不兼容，持续扩充</span><span class="src"><a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank">PCMag</a></span></li>
+        <li class="dr"><span class="dk">反作弊支持</span><span class="dv dw">《使命召唤》等需等 2027 年</span><span class="src"><a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank">PCMag</a></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 产品阵容 -->
+<section id="products" class="mb-12">
+  <div class="mb-4"><p class="sl mb-1">Section 03</p><h2 class="text-xl font-bold text-slate-800">产品阵容 · 规格 · 定价</h2></div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+    <div class="pc">
+      <div class="p-4 border-b" style="background:linear-gradient(135deg,#f0f4f8,#e8f0fe);">
+        <div class="flex items-start justify-between"><div><span class="badge bb mb-1">微软</span><h3 class="font-bold text-slate-900">Surface Laptop Ultra</h3><p class="text-xs text-slate-500">旗舰 RTX Spark 设备</p></div><div class="text-right"><div class="text-xl font-black text-slate-900">$3,299</div><div class="text-xs text-slate-500">起售价</div></div></div>
+      </div>
+      <div class="p-4">
+        <ul class="space-y-0">
+          <li class="dr"><span class="dk">芯片</span><span class="dv">N1X（20核 CPU，6144 GPU）</span><span class="src"><a href="https://www.microsoft.com/en-us/windows/rtx-spark-laptops" target="_blank">微软官网</a></span></li>
+          <li class="dr"><span class="dk">内存</span><span class="dv dg">64GB / 128GB LPDDR5X</span><span class="src"><a href="https://www.microsoft.com/en-us/windows/rtx-spark-laptops" target="_blank">微软官网</a></span></li>
+          <li class="dr"><span class="dk">存储</span><span class="dv">1TB / 2TB NVMe</span><span class="src"><a href="https://www.microsoft.com/en-us/windows/rtx-spark-laptops" target="_blank">微软官网</a></span></li>
+          <li class="dr"><span class="dk">屏幕</span><span class="dv">15" 叠层 OLED 2880×1920 120Hz</span><span class="src"><a href="https://www.howtogeek.com/rtx-spark-hands-on-asus-dell-microsoft/" target="_blank">How-To Geek</a></span></li>
+          <li class="dr"><span class="dk">续航</span><span class="dv dg">约 20 小时（办公）</span><span class="src"><a href="https://www.tomshardware.com/laptops/we-test-the-rtx-spark-superchip-in-microsofts-surface-laptop-ultra-nvidias-windows-on-arm-platform-impresses-in-local-ai-but-gaming-isnt-its-strong-suit" target="_blank">Tom's HW</a></span></li>
+          <li class="dr"><span class="dk">重量 / 厚度</span><span class="dv dg">约 1.44 kg / 14.5mm</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank">NVIDIA</a></span></li>
+          <li class="dr"><span class="dk">上市时间</span><span class="dv dg">2026年10月16日</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank">NVIDIA</a></span></li>
+          <li class="dr"><span class="dk">价格区间</span><span class="dv">$3,299 – $4,499+</span><span class="src"><a href="https://www.reddit.com/r/nvidia/comments/1x0egxx/all_the_new_rtx_spark_laptops_so_far_and_their/" target="_blank">Reddit</a></span></li>
+        </ul>
+        <div class="vg">Tom's Hardware：LLM 任务比 MacBook Pro 14" 快约 25% · <a href="https://www.tomshardware.com/laptops/we-test-the-rtx-spark-superchip-in-microsofts-surface-laptop-ultra-nvidias-windows-on-arm-platform-impresses-in-local-ai-but-gaming-isnt-its-strong-suit" target="_blank" class="underline">查看评测</a></div>
+      </div>
+    </div>
+
+    <div class="pc">
+      <div class="p-4 border-b" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
+        <div class="flex items-start justify-between"><div><span class="badge bg mb-1">华硕</span><h3 class="font-bold text-slate-900">ProArt P16（H7607）</h3><p class="text-xs text-slate-500">创作者旗舰，最高配置</p></div><div class="text-right"><div class="text-xl font-black text-slate-900">$2,599</div><div class="text-xs text-slate-500">起售价</div></div></div>
+      </div>
+      <div class="p-4">
+        <ul class="space-y-0">
+          <li class="dr"><span class="dk">芯片</span><span class="dv">N1X（20核 CPU，6144 GPU）</span><span class="src"><a href="https://www.asus.com/us/laptops/for-creators/proart/proart-p16-h7607/techspec/" target="_blank">华硕官网</a></span></li>
+          <li class="dr"><span class="dk">内存</span><span class="dv dg">64GB / 128GB LPDDR5X</span><span class="src"><a href="https://www.asus.com/us/laptops/for-creators/proart/proart-p16-h7607/techspec/" target="_blank">华硕官网</a></span></li>
+          <li class="dr"><span class="dk">存储</span><span class="dv">1TB / 2TB NVMe SSD</span><span class="src"><a href="https://eshop.asus.com/us/31150-us-cnf-auto.html" target="_blank">华硕商店</a></span></li>
+          <li class="dr"><span class="dk">屏幕</span><span class="dv">16" OLED 3200×2000 120Hz</span><span class="src"><a href="https://www.asus.com/us/laptops/for-creators/proart/proart-p16-h7607/" target="_blank">华硕官网</a></span></li>
+          <li class="dr"><span class="dk">电池</span><span class="dv">99.9Wh，4 芯锂离子</span><span class="src"><a href="https://eshop.asus.com/us/31150-us-cnf-auto.html" target="_blank">华硕商店</a></span></li>
+          <li class="dr"><span class="dk">上市时间</span><span class="dv dg">2026年10月16日</span><span class="src"><a href="https://www.redsharknews.com/asus-proart-p16-p14-rtx-spark-price-availability" target="_blank">RedShark</a></span></li>
+          <li class="dr"><span class="dk">价格区间</span><span class="dv">$2,599 – $6,999（128GB/2TB）</span><span class="src"><a href="https://tech-insider.org/nvidia-rtx-spark-laptops-launch-2599-128gb-2026/" target="_blank">Tech-Insider</a></span></li>
+        </ul>
+        <div class="vg">首批上市，配置范围最广 · <a href="https://www.asus.com/us/laptops/for-creators/proart/proart-p16-h7607/" target="_blank" class="underline">华硕官网</a></div>
+      </div>
+    </div>
+
+    <div class="pc">
+      <div class="p-4 border-b" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
+        <div class="flex items-start justify-between"><div><span class="badge bg mb-1">华硕</span><h3 class="font-bold text-slate-900">ProArt P14</h3><p class="text-xs text-slate-500">紧凑 14" 创作者本</p></div><div class="text-right"><div class="text-xl font-black text-slate-900">$3,699</div><div class="text-xs text-slate-500">48GB 版本</div></div></div>
+      </div>
+      <div class="p-4">
+        <ul class="space-y-0">
+          <li class="dr"><span class="dk">芯片</span><span class="dv">N1X（18核 CPU，5120 GPU）</span><span class="src"><a href="https://www.asus.com/us/laptops/for-creators/proart/proart-p16-h7607/techspec/" target="_blank">华硕官网</a></span></li>
+          <li class="dr"><span class="dk">内存</span><span class="dv">32GB / 48GB LPDDR5X</span><span class="src"><a href="https://www.redsharknews.com/asus-proart-p16-p14-rtx-spark-price-availability" target="_blank">RedShark</a></span></li>
+          <li class="dr"><span class="dk">屏幕</span><span class="dv">14" OLED 2880×1800 120Hz</span><span class="src"><a href="https://www.redsharknews.com/asus-proart-p16-p14-rtx-spark-price-availability" target="_blank">RedShark</a></span></li>
+          <li class="dr"><span class="dk">机身厚度</span><span class="dv dg">约 14mm（超薄）</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank">NVIDIA</a></span></li>
+          <li class="dr"><span class="dk">上市时间</span><span class="dv dg">2026年10月16日</span><span class="src"><a href="https://www.redsharknews.com/asus-proart-p16-p14-rtx-spark-price-availability" target="_blank">RedShark</a></span></li>
+          <li class="dr"><span class="dk">价格区间</span><span class="dv">$3,699（48GB）</span><span class="src"><a href="https://www.reddit.com/r/nvidia/comments/1x0egxx/all_the_new_rtx_spark_laptops_so_far_and_their/" target="_blank">Reddit</a></span></li>
+        </ul>
+        <div class="vg">N1X 基础版，移动优先形态 · <a href="https://www.asus.com/blog/asus-laptops-with-nvidia-rtx-spark-transforming-ai-workflows-for-creators/" target="_blank" class="underline">华硕博客</a></div>
+      </div>
+    </div>
+
+    <div class="pc">
+      <div class="p-4 border-b" style="background:linear-gradient(135deg,#eff6ff,#dbeafe);">
+        <div class="flex items-start justify-between"><div><span class="badge bb mb-1">戴尔</span><h3 class="font-bold text-slate-900">XPS 16 创意版</h3><p class="text-xs text-slate-500">旗舰 OLED 创意超薄本</p></div><div class="text-right"><div class="text-xl font-black text-slate-900">$3,799</div><div class="text-xs text-slate-500">起售价</div></div></div>
+      </div>
+      <div class="p-4">
+        <ul class="space-y-0">
+          <li class="dr"><span class="dk">芯片</span><span class="dv">N1X（18核/20核 CPU）</span><span class="src"><a href="https://www.dell.com/en-us/shop/laptop-computers/spd/xps16dx16263" target="_blank">戴尔官网</a></span></li>
+          <li class="dr"><span class="dk">内存</span><span class="dv">32GB / 64GB LPDDR5X</span><span class="src"><a href="https://www.dell.com/en-us/shop/laptop-computers/spd/xps16dx16263" target="_blank">戴尔官网</a></span></li>
+          <li class="dr"><span class="dk">屏幕</span><span class="dv dg">16" 3.2K OLED 触控 120Hz</span><span class="src"><a href="https://tech-insider.org/dell-xps-16-rtx-spark-creator-edition-2026/" target="_blank">Tech-Insider</a></span></li>
+          <li class="dr"><span class="dk">电池</span><span class="dv">99Wh</span><span class="src"><a href="https://tech-insider.org/dell-xps-16-rtx-spark-creator-edition-2026/" target="_blank">Tech-Insider</a></span></li>
+          <li class="dr"><span class="dk">上市时间</span><span class="dv dg">10月16日（18核）；11月（20核）</span><span class="src"><a href="https://www.dell.com/en-us/shop/laptop-computers/spd/xps16dx16263" target="_blank">戴尔官网</a></span></li>
+          <li class="dr"><span class="dk">价格区间</span><span class="dv">$3,799 – $3,999（20核版）</span><span class="src"><a href="https://www.dell.com/en-us/shop/laptop-computers/spd/xps16dx16263" target="_blank">戴尔官网</a></span></li>
+        </ul>
+        <div class="vg">「为对硬件要求最高的人而生」— 迈克尔·戴尔 · <a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank" class="underline">NVIDIA 公告</a></div>
+      </div>
+    </div>
+
+    <div class="pc">
+      <div class="p-4 border-b" style="background:linear-gradient(135deg,#fdf4ff,#ede9fe);">
+        <div class="flex items-start justify-between"><div><span class="badge bp mb-1">惠普</span><h3 class="font-bold text-slate-900">OmniBook Ultra 16</h3><p class="text-xs text-slate-500">超薄 RTX Spark 开发者本</p></div><div class="text-right"><div class="text-xl font-black text-slate-900">$3,199</div><div class="text-xs text-slate-500">起售价</div></div></div>
+      </div>
+      <div class="p-4">
+        <ul class="space-y-0">
+          <li class="dr"><span class="dk">芯片</span><span class="dv">N1X（20核 CPU，6144 GPU）</span><span class="src"><a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank">PCMag</a></span></li>
+          <li class="dr"><span class="dk">内存</span><span class="dv dg">64GB / 128GB LPDDR5X</span><span class="src"><a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank">PCMag</a></span></li>
+          <li class="dr"><span class="dk">屏幕</span><span class="dv">16" OLED 120Hz</span><span class="src"><a href="https://www.pcmag.com/opinions/rtx-spark-and-builder-pcs-microsoft-nvidia-oct-7-surface-event-explained" target="_blank">PCMag</a></span></li>
+          <li class="dr"><span class="dk">机身</span><span class="dv dg">RTX Spark 最薄笔记本之一</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank">NVIDIA</a></span></li>
+          <li class="dr"><span class="dk">上市时间</span><span class="dv dg">2026年10月16日</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank">NVIDIA</a></span></li>
+          <li class="dr"><span class="dk">价格区间</span><span class="dv">$3,199 – $4,999（测试版本）</span><span class="src"><a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank">PCMag</a></span></li>
+        </ul>
+        <div class="vg">PCMag 测试 $4,999 版本，游戏性能「完全胜任」 · <a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank" class="underline">PCMag 评测</a></div>
+      </div>
+    </div>
+
+    <div class="pc">
+      <div class="p-4 border-b" style="background:linear-gradient(135deg,#fff7ed,#ffedd5);">
+        <div class="flex items-start justify-between"><div><span class="badge by mb-1">微星 / 联想</span><h3 class="font-bold text-slate-900">Prestige N16 Flip AI+ / Yoga Pro 9n</h3><p class="text-xs text-slate-500">翻转二合一 / 超薄旗舰</p></div><div class="text-right"><div class="text-xl font-black text-slate-900">待定</div><div class="text-xs text-slate-500">价格未公布</div></div></div>
+      </div>
+      <div class="p-4">
+        <ul class="space-y-0">
+          <li class="dr"><span class="dk">芯片</span><span class="dv">N1X（20核 CPU，6144 GPU）</span><span class="src"><a href="https://www.techradar.com/pro/microsoft-isnt-the-only-company-releasing-a-laptop-with-an-nvidia-rtx-spark-msi-reveals-new-16-inch-128gb-beast" target="_blank">TechRadar</a></span></li>
+          <li class="dr"><span class="dk">内存</span><span class="dv dg">最高 128GB LPDDR5X</span><span class="src"><a href="https://www.techradar.com/pro/microsoft-isnt-the-only-company-releasing-a-laptop-with-an-nvidia-rtx-spark-msi-reveals-new-16-inch-128gb-beast" target="_blank">TechRadar</a></span></li>
+          <li class="dr"><span class="dk">微星形态</span><span class="dv">360° 翻转二合一（Flip）</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank">NVIDIA</a></span></li>
+          <li class="dr"><span class="dk">联想形态</span><span class="dv">超薄翻盖旗舰（Yoga Pro 9n）</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank">NVIDIA</a></span></li>
+          <li class="dr"><span class="dk">上市时间</span><span class="dv dg">2026年10月16日</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank">NVIDIA</a></span></li>
+        </ul>
+        <div class="vg">微星 CEO：「重新定义紧凑高效 PC 的边界」 · <a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank" class="underline">NVIDIA 公告</a></div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- 性能基准 -->
+<section id="benchmarks" class="mb-12">
+  <div class="mb-4"><p class="sl mb-1">Section 04</p><h2 class="text-xl font-bold text-slate-800">性能基准测试</h2></div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+    <div class="card p-5">
+      <h3 class="font-bold text-slate-800 text-sm mb-3">本地 AI / LLM 性能 · <a href="https://www.tomshardware.com/laptops/we-test-the-rtx-spark-superchip-in-microsofts-surface-laptop-ultra-nvidias-windows-on-arm-platform-impresses-in-local-ai-but-gaming-isnt-its-strong-suit" target="_blank" class="text-blue-500 hover:underline font-normal text-xs">Tom's Hardware</a></h3>
+      <div class="space-y-3">
+        <div><div class="flex justify-between text-xs mb-1"><span>RTX Spark N1X 128GB — Llama 3.1 70B</span><span class="font-bold text-green-600">约 45 tok/s</span></div><div class="sb"><div class="sf" style="width:90%;background:linear-gradient(90deg,#76b900,#a3e635)"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span>Apple M5 Max 128GB — Llama 3.1 70B</span><span class="font-bold text-blue-600">约 38 tok/s</span></div><div class="sb"><div class="sf" style="width:76%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span>高通骁龙 X Elite — Llama 70B（32GB 限制）</span><span class="font-bold text-slate-500">约 18 tok/s</span></div><div class="sb"><div class="sf" style="width:36%;background:#94a3b8"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span>RTX Spark — Nemotron 74B FP4 优化</span><span class="font-bold text-green-600">本地运行 1200 亿参数</span></div><div class="sb"><div class="sf" style="width:95%;background:linear-gradient(90deg,#76b900,#a3e635)"></div></div></div>
+      </div>
+      <p class="text-xs text-slate-400 mt-2">Surface Laptop Ultra 完成 LLM 任务比 MacBook Pro 14" 快约 25% · <a href="https://www.tomshardware.com/laptops/we-test-the-rtx-spark-superchip-in-microsofts-surface-laptop-ultra-nvidias-windows-on-arm-platform-impresses-in-local-ai-but-gaming-isnt-its-strong-suit" target="_blank" class="text-blue-500 hover:underline">来源</a></p>
+    </div>
+    <div class="card p-5">
+      <h3 class="font-bold text-slate-800 text-sm mb-3">游戏测试 — 《赛博朋克 2077》1440p Ultra · <a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank" class="text-blue-500 hover:underline font-normal text-xs">PCMag</a></h3>
+      <div class="space-y-3">
+        <div><div class="flex justify-between text-xs mb-1"><span>RTX Spark N1X 6144（惠普 OmniBook Ultra 16，80W）</span><span class="font-bold text-yellow-600">约 52 fps</span></div><div class="sb"><div class="sf" style="width:52%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span>RTX 5060 笔记本（100W TDP）</span><span class="font-bold text-blue-600">约 55 fps</span></div><div class="sb"><div class="sf" style="width:55%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span>RTX 5080 笔记本（150W TDP）</span><span class="font-bold text-green-600">约 95 fps</span></div><div class="sb"><div class="sf" style="width:95%;background:linear-gradient(90deg,#22c55e,#4ade80)"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span>RTX Spark — 开启 DLSS 5 + 帧生成</span><span class="font-bold text-green-600">100+ fps</span></div><div class="sb"><div class="sf" style="width:100%;background:linear-gradient(90deg,#76b900,#a3e635)"></div></div></div>
+      </div>
+      <p class="text-xs text-slate-400 mt-2">80W TDP 上限（vs 独显 100–150W）限制原生游戏性能；DLSS 5 是均衡器 · <a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank" class="text-blue-500 hover:underline">来源</a></p>
+    </div>
+  </div>
+  <!-- 竞品对比 -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+    <div class="card p-4">
+      <div class="text-xs font-bold text-slate-700 mb-2">对比 Apple Silicon（M5 Max）</div>
+      <div class="text-xs text-slate-600 leading-relaxed">RTX Spark 提供相当的统一内存带宽，并增加完整 CUDA 生态与 DLSS。Tom's Hardware 实测：Surface Laptop Ultra LLM 任务比 MacBook Pro 14" 快约 25%。</div>
+      <div class="text-xs text-slate-400 mt-2"><a href="https://www.tomshardware.com/laptops/we-test-the-rtx-spark-superchip-in-microsofts-surface-laptop-ultra-nvidias-windows-on-arm-platform-impresses-in-local-ai-but-gaming-isnt-its-strong-suit" target="_blank" class="text-blue-500 hover:underline">来源：Tom's Hardware</a></div>
+    </div>
+    <div class="card p-4">
+      <div class="text-xs font-bold text-slate-700 mb-2">对比高通骁龙 X Elite</div>
+      <div class="text-xs text-slate-600 leading-relaxed">RTX Spark 带来 RTX GPU 加速，内存容量远超（128GB vs 最高 64GB）。骁龙 X Elite 不支持 CUDA，无法运行超过 32GB 的本地 LLM。</div>
+      <div class="text-xs text-slate-400 mt-2"><a href="https://www.lttlabs.com/articles/2026/10/16/nvidia-rtx-spark-n1x-review" target="_blank" class="text-blue-500 hover:underline">来源：LTT Labs</a></div>
+    </div>
+    <div class="card p-4">
+      <div class="text-xs font-bold text-slate-700 mb-2">对比 AMD Strix/Gorgon Halo</div>
+      <div class="text-xs text-slate-600 leading-relaxed">AMD 在 RTX Spark 发布前抢先发布 Gorgon Halo 基准数据，声称部分 AI 工作负载领先，已出货超 50 万台「智能体 PC」。</div>
+      <div class="text-xs text-slate-400 mt-2"><a href="https://www.tomshardware.com/pc-components/cpus/amd-attempts-to-get-ahead-of-expected-rtx-spark-launch-with-gorgon-halo-ai-benchmarks-company-says-it-has-shipped-over-half-a-million-agentic-pcs-to-date" target="_blank" class="text-blue-500 hover:underline">来源：Tom's Hardware</a></div>
+    </div>
+  </div>
+  <div class="card overflow-hidden">
+    <div style="background:#0f172a;padding:10px 14px;"><h3 class="font-bold text-white text-sm">创意与生产力对比 · 多来源综合</h3></div>
+    <div class="overflow-x-auto">
+      <table>
+        <thead><tr><th>工作负载</th><th>RTX Spark N1X（128GB）</th><th>Apple M5 Max（128GB）</th><th>RTX 5070 Ti 笔记本</th><th>胜出 / 来源</th></tr></thead>
+        <tbody>
+          <tr><td class="font-semibold">LLM 推理（Llama 70B）</td><td class="text-green-600 font-bold">约 45 tok/s</td><td>约 38 tok/s</td><td>不支持（16GB 显存）</td><td><span class="badge bn">RTX Spark</span> · <a href="https://www.tomshardware.com/laptops/we-test-the-rtx-spark-superchip-in-microsofts-surface-laptop-ultra-nvidias-windows-on-arm-platform-impresses-in-local-ai-but-gaming-isnt-its-strong-suit" target="_blank" class="text-blue-500 text-xs hover:underline">TH</a></td></tr>
+          <tr><td class="font-semibold">Adobe Premiere 导出（8K）</td><td class="text-green-600 font-bold">约 8 分钟（TensorRT）</td><td>约 10 分钟</td><td>约 9 分钟</td><td><span class="badge bn">RTX Spark</span> · <a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank" class="text-blue-500 text-xs hover:underline">NVIDIA</a></td></tr>
+          <tr><td class="font-semibold">3D 场景渲染（90GB 场景）</td><td class="text-green-600 font-bold">✓ 支持</td><td>✓ 支持</td><td>✗ 显存不足</td><td><span class="badge bn">RTX Spark</span> · <a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank" class="text-blue-500 text-xs hover:underline">NVIDIA</a></td></tr>
+          <tr><td class="font-semibold">Cinebench 2024 多核</td><td>约 800 分</td><td class="text-green-600 font-bold">约 1,100 分</td><td>约 900 分</td><td><span class="badge bb">M5 Max</span> · <a href="https://www.lttlabs.com/articles/2026/10/16/nvidia-rtx-spark-n1x-review" target="_blank" class="text-blue-500 text-xs hover:underline">LTT Labs</a></td></tr>
+          <tr><td class="font-semibold">游戏（1440p 原生无 DLSS）</td><td>约 52 fps</td><td>约 30 fps</td><td class="text-green-600 font-bold">约 55–95 fps</td><td><span class="badge br">RTX 5060+</span> · <a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank" class="text-blue-500 text-xs hover:underline">PCMag</a></td></tr>
+          <tr><td class="font-semibold">续航（办公场景）</td><td>约 18–20 小时</td><td class="text-green-600 font-bold">约 22 小时</td><td>约 8–12 小时</td><td><span class="badge bb">M5 Max</span> · <a href="https://www.tomshardware.com/laptops/we-test-the-rtx-spark-superchip-in-microsofts-surface-laptop-ultra-nvidias-windows-on-arm-platform-impresses-in-local-ai-but-gaming-isnt-its-strong-suit" target="_blank" class="text-blue-500 text-xs hover:underline">TH</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 媒体评测 -->
+<section id="reviews" class="mb-12">
+  <div class="mb-4"><p class="sl mb-1">Section 05</p><h2 class="text-xl font-bold text-slate-800">媒体评测汇总</h2></div>
+  <div class="card overflow-hidden">
+    <table>
+      <thead><tr><th>媒体 / 来源</th><th>评分</th><th>核心结论</th><th>链接</th></tr></thead>
+      <tbody>
+        <tr><td class="font-semibold">Tom's Hardware</td><td><span style="background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px">4/5</span></td><td class="text-xs">LLM 任务比 MacBook Pro 14" 快 25%；Surface Laptop Ultra 设计精美；游戏是附加功能</td><td class="text-xs"><a href="https://www.tomshardware.com/laptops/we-test-the-rtx-spark-superchip-in-microsofts-surface-laptop-ultra-nvidias-windows-on-arm-platform-impresses-in-local-ai-but-gaming-isnt-its-strong-suit" target="_blank" class="text-blue-500 hover:underline">查看</a></td></tr>
+        <tr><td class="font-semibold">PCMag</td><td><span style="background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px">4/5</span></td><td class="text-xs">《赛博朋克 2077》1440p 可流畅运行；DLSS 5 推至 100+ fps；Arm 游戏库有限</td><td class="text-xs"><a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank" class="text-blue-500 hover:underline">查看</a></td></tr>
+        <tr><td class="font-semibold">LTT Labs</td><td><span style="background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px">3/5</span></td><td class="text-xs">完整 RTX 生态（CUDA/DLSS）落地 Arm Windows；$2,599+ 对非 AI 用户性价比存疑</td><td class="text-xs"><a href="https://www.lttlabs.com/articles/2026/10/16/nvidia-rtx-spark-n1x-review" target="_blank" class="text-blue-500 hover:underline">查看</a></td></tr>
+        <tr><td class="font-semibold">NotebookCheck</td><td><span style="background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px">—</span></td><td class="text-xs">GPU 规格分析：6144 核 N1X，382mm² die，CUDA 12.1，性能定位 RTX 5070 移动级</td><td class="text-xs"><a href="https://www.notebookcheck.net/HiSilicon-Kirin-XE90-Processor-Benchmarks-and-Specs.1359644.0.html" target="_blank" class="text-blue-500 hover:underline">查看</a></td></tr>
+        <tr><td class="font-semibold">Linus Tech Tips</td><td><span style="background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px">正面</span></td><td class="text-xs">性能与薄度比值获高度赞扬；AI 软件生态完善；可能推动英特尔/AMD 处理器降价</td><td class="text-xs"><a href="https://www.youtube.com/watch?v=aV81SqB6HQg" target="_blank" class="text-blue-500 hover:underline">查看</a></td></tr>
+        <tr><td class="font-semibold">Reddit r/nvidia</td><td><span style="background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px">褒贬不一</span></td><td class="text-xs">GPU 约等于 RTX 5060 桌面/5070 移动；超越 M5 Pro；「游戏性价比差」</td><td class="text-xs"><a href="https://www.reddit.com/r/Surface/comments/1x6kre9/rtx_spark_gaming_performance_revealed/" target="_blank" class="text-blue-500 hover:underline">查看</a></td></tr>
+        <tr><td class="font-semibold">笔吧评测室（B站）</td><td><span style="background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px">正面</span></td><td class="text-xs">首批中文深度评测；重点测试 AI 推理与创作场景；认为是 Windows 生态对 Apple Silicon 的正式回应</td><td class="text-xs"><a href="https://www.bilibili.com/video/BV1iq4R6SEUB" target="_blank" class="text-blue-500 hover:underline">查看</a></td></tr>
+        <tr><td class="font-semibold">Micro Center</td><td><span style="background:#f1f5f9;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px">正面</span></td><td class="text-xs">DaVinci Resolve 创作性能出色；游戏约等于 80W RTX 5060 桌面版；不推荐作为游戏主力机</td><td class="text-xs"><a href="https://www.youtube.com/watch?v=Rqtdx4V0TkQ" target="_blank" class="text-blue-500 hover:underline">查看</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 优缺点 -->
+<section id="verdict" class="mb-10">
+  <div class="mb-4"><p class="sl mb-1">Section 06</p><h2 class="text-xl font-bold text-slate-800">优势 · 劣势 · 适合人群</h2></div>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+    <div class="card p-4">
+      <h3 class="font-bold text-slate-800 text-sm mb-3">✓ 核心优势</h3>
+      <ul class="space-y-0">
+        <li class="dr"><span class="dv">128GB 统一内存，支持 1200 亿参数 LLM</span><span class="src"><a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank">规格</a></span></li>
+        <li class="dr"><span class="dv">完整 CUDA / DLSS 5 / TensorRT 技术栈</span><span class="src"><a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank">规格</a></span></li>
+        <li class="dr"><span class="dv">LLM 推理比 MacBook Pro 14" 快 25%</span><span class="src"><a href="https://www.tomshardware.com/laptops/we-test-the-rtx-spark-superchip-in-microsofts-surface-laptop-ultra-nvidias-windows-on-arm-platform-impresses-in-local-ai-but-gaming-isnt-its-strong-suit" target="_blank">TH</a></span></li>
+        <li class="dr"><span class="dv">最薄 14mm，最轻约 1.4kg</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-microsoft-windows-pcs-agents-rtx-spark" target="_blank">NVIDIA</a></span></li>
+        <li class="dr"><span class="dv">首发支持 Adobe / GitHub Copilot / Hermes</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank">NVIDIA</a></span></li>
+        <li class="dr"><span class="dv">完整 Windows 11 + CUDA + WSL2</span><span class="src"><a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank">规格</a></span></li>
+      </ul>
+    </div>
+    <div class="card p-4">
+      <h3 class="font-bold text-slate-800 text-sm mb-3">✗ 核心劣势</h3>
+      <ul class="space-y-0">
+        <li class="dr"><span class="dv">80W TDP 上限（独显 100–150W）</span><span class="src"><a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank">PCMag</a></span></li>
+        <li class="dr"><span class="dv">Arm 架构排除大量游戏</span><span class="src"><a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank">PCMag</a></span></li>
+        <li class="dr"><span class="dv">起售价 $2,599+，价格高昂</span><span class="src"><a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank">NVIDIA</a></span></li>
+        <li class="dr"><span class="dv">部分 x86 应用需模拟运行</span><span class="src"><a href="https://www.lttlabs.com/articles/2026/10/16/nvidia-rtx-spark-n1x-review" target="_blank">LTT Labs</a></span></li>
+        <li class="dr"><span class="dv">反作弊（《使命召唤》）需等 2027 年</span><span class="src"><a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank">PCMag</a></span></li>
+        <li class="dr"><span class="dv">第一代平台，软件生态持续完善中</span><span class="src"><a href="https://www.reddit.com/r/nvidia/comments/1x0egxx/all_the_new_rtx_spark_laptops_so_far_and_their/" target="_blank">Reddit</a></span></li>
+      </ul>
+    </div>
+    <div class="card p-4">
+      <h3 class="font-bold text-slate-800 text-sm mb-3">→ 适合人群</h3>
+      <div class="space-y-3">
+        <div class="p-3 rounded-lg bg-green-50 border border-green-100">
+          <div class="text-xs font-bold text-green-700 mb-1">✓ 最适合</div>
+          <ul class="text-xs text-green-800 space-y-1">
+            <li>• 本地运行大语言模型的 AI/ML 开发者</li>
+            <li>• 使用 Adobe Premiere / DaVinci 的视频编辑</li>
+            <li>• 需要大场景内存的 3D 艺术家</li>
+            <li>• 在 Windows 上构建 AI 智能体的开发者</li>
+            <li>• 寻找 MacBook Pro 替代品的专业用户</li>
+          </ul>
+        </div>
+        <div class="p-3 rounded-lg bg-red-50 border border-red-100">
+          <div class="text-xs font-bold text-red-700 mb-1">✗ 不适合</div>
+          <ul class="text-xs text-red-800 space-y-1">
+            <li>• 以游戏为主要需求的用户</li>
+            <li>• 预算敏感的用户（$2,599+）</li>
+            <li>• 依赖 x86 专用软件的用户</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+<div class="border-t border-slate-200 pt-5 pb-4 flex flex-wrap justify-between gap-2 text-xs text-slate-400">
+  <div>数据来源：<a href="https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs" target="_blank" class="text-blue-400 hover:underline">NVIDIA 新闻室</a> · <a href="https://www.tomshardware.com/laptops/we-test-the-rtx-spark-superchip-in-microsofts-surface-laptop-ultra-nvidias-windows-on-arm-platform-impresses-in-local-ai-but-gaming-isnt-its-strong-suit" target="_blank" class="text-blue-400 hover:underline">Tom's Hardware</a> · <a href="https://www.pcmag.com/news/nvidia-rtx-spark-gaming-tests-are-these-new-ai-laptops-good-for-play-too" target="_blank" class="text-blue-400 hover:underline">PCMag</a> · <a href="https://www.lttlabs.com/articles/2026/10/16/nvidia-rtx-spark-n1x-review" target="_blank" class="text-blue-400 hover:underline">LTT Labs</a> · <a href="https://www.nvidia.com/en-us/products/rtx-spark/specifications/" target="_blank" class="text-blue-400 hover:underline">NVIDIA 官方规格</a></div>
+  <div>报告日期：2026年10月21日 · CPC 竞品情报中心</div>
+</div>
+
+</div>
+</body>
+</html>
